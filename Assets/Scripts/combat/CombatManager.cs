@@ -7,7 +7,7 @@ using events;
 using UnityEditor;
 using UnityEngine;
 
-namespace controller.combat
+namespace combat
 {
     public class CombatManager : MonoBehaviour
     {
@@ -18,7 +18,8 @@ namespace controller.combat
         public List<Entity> allCombatants = new  List<Entity>();
         [Header("State")]
         public CombatState combatState;
-        
+        [Header("Managers")]
+        [SerializeField] private PositionManager positionManager;
         private Queue<Entity> turnQueue = new Queue<Entity>();
         private Entity currentActor;
 
@@ -26,7 +27,8 @@ namespace controller.combat
         {
             return currentActor;
         }
-        void Awake()
+
+        private void Awake()
         {
             if (Instance == null)
                 Instance = this;
@@ -44,7 +46,7 @@ namespace controller.combat
             allCombatants.AddRange(playerList);
             allCombatants.AddRange(enemyList);
             allCombatants.Sort((a, b) => b.ActionSpeed.CompareTo(a.ActionSpeed));
-
+            SetupEntityPositions();
             CreateActionQueue(allCombatants);
             StartNextTurn();
         }
@@ -106,6 +108,31 @@ namespace controller.combat
                     turnQueue.Enqueue(e);
                 }
             }
+        }
+        private void SetupEntityPositions()
+        {
+            // Register player positions
+            for (int i = 0; i < playerList.Count; i++)
+            {
+                positionManager.RegisterEntityPosition(playerList[i], i);
+                if (i < positionManager.playableCharPositions.Count)
+                {
+                    playerList[i].transform.position = positionManager.playableCharPositions[i].position;
+                }
+            }
+    
+            // Register enemy positions
+            for (int i = 0; i < enemyList.Count; i++)
+            {
+                positionManager.RegisterEntityPosition(enemyList[i], i);
+
+                if (i < positionManager.enemyPositions.Count)
+                {
+                    enemyList[i].transform.position = positionManager.enemyPositions[i].position;
+                }
+            }
+    
+            Debug.Log($"Registered {playerList.Count} player positions and {enemyList.Count} enemy positions");
         }
         void OnDestroy()
         {

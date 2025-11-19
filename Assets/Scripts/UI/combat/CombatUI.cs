@@ -1,9 +1,7 @@
-using System;
-using controller.combat;
+using combat;
 using entity;
 using events;
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 namespace UI.combat
@@ -48,12 +46,7 @@ namespace UI.combat
 
         private void OnAttackButtonClicked()
         {
-            Entity target = FindFirstEnemy();
-            
-            if (target != null)
-            {
-                CombatEvents.RaiseAttackButtonClicked(target);
-            }
+                CombatEvents.RaiseAttackButtonClicked();
         }
 
         private Entity FindFirstEnemy()
