@@ -7,7 +7,7 @@ namespace events
     public static class CombatEvents
     {
         public static event Action OnAttackButtonClicked;
-
+        public static event Action OnCancelButtonClicked;
         public static event Action<List<Entity>> OnTargetCalculated;
         
         public static event Action<Entity> OnTargetSelected;
@@ -50,6 +50,11 @@ namespace events
         {
             OnEntityDied?.Invoke(entity);
         }
+
+        public static void RaiseCancelButtonClicked()
+        {
+            OnCancelButtonClicked?.Invoke();
+        }
         public static void ClearAllEvents()
         {
             OnAttackButtonClicked = null;
@@ -57,7 +62,9 @@ namespace events
             OnPlayerTurnEnded = null;
             OnDamageTaken = null;
             OnEntityDied = null;
-
+            OnTargetCalculated = null;
+            OnTargetSelected = null;
+            OnCancelButtonClicked = null;
         }
     }
 }

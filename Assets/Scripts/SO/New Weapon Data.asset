@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: New Weapon Data
   m_EditorClassIdentifier: Assembly-CSharp::data.WeaponData
   damage: 10
-  range: 2
+  range: 3

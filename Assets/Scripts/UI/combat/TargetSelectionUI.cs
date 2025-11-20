@@ -31,11 +31,13 @@ namespace UI.combat
         void OnEnable()
         {
             CombatEvents.OnTargetCalculated += HandleTargetsAvailable;
+            CombatEvents.OnCancelButtonClicked += HandleCancelButtonClicked;
         }
 
         void OnDisable()
         {
             CombatEvents.OnTargetCalculated -= HandleTargetsAvailable;
+            CombatEvents.OnCancelButtonClicked -= HandleCancelButtonClicked;
         }
         private void HandleTargetsAvailable(List<Entity> validTargets)
         {
@@ -82,6 +84,7 @@ namespace UI.combat
             
             isSelecting = false;
         }
+        
         private void PositionIndicator(GameObject indicator, Entity target)
         {
             Vector3 worldPosition = target.transform.position;
@@ -112,6 +115,11 @@ namespace UI.combat
             activeIndicators.Clear();
             indicatorToEntity.Clear();
             isSelecting = false;
+        }
+        
+        private void HandleCancelButtonClicked()
+        {
+            ClearIndicators();
         }
     }
 }
