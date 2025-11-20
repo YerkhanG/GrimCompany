@@ -25,7 +25,6 @@ namespace entity
         private void InitializeStats()
         {
             currentHealth = entityData.maxHealth;
-            currentPosition = entityData.defaultPosition;
         }
 
         public virtual void TakeDamage(int  damage)

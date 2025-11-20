@@ -1,9 +1,8 @@
-using System;
-using controller.combat;
+using System.Collections.Generic;
+using combat;
 using entity;
 using events;
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 namespace UI.combat
@@ -14,7 +13,7 @@ namespace UI.combat
         [SerializeField] private GameObject actionPanel;
         [Header("UI Buttons")]
         [SerializeField] private Button attackButton;
-
+        [SerializeField] private Button cancelButton;
         [Header("For testing")] [SerializeField]
         private Entity entity;
 
@@ -26,6 +25,7 @@ namespace UI.combat
         void OnEnable()
         {
             attackButton.onClick.AddListener(OnAttackButtonClicked);
+            cancelButton.onClick.AddListener(OnCancelButtonClicked);
             CombatEvents.OnPlayerTurnStarted += HandleTurnStarted;
             CombatEvents.OnPlayerTurnEnded += HandleTurnEnded;
         }
@@ -48,34 +48,48 @@ namespace UI.combat
 
         private void OnAttackButtonClicked()
         {
-            Entity target = FindFirstEnemy();
-            
-            if (target != null)
-            {
-                CombatEvents.RaiseAttackButtonClicked(target);
-            }
+            CombatEvents.RaiseAttackButtonClicked();
+            HideActionButtons();
+            ShowCancelButton();
         }
-
-        private Entity FindFirstEnemy()
+        private void OnCancelButtonClicked()
         {
-            foreach (var entity in CombatManager.Instance.enemyList)
-            {
-                if (entity.isAlive)
-                    return entity;
-            }
-            return null;
+            CombatEvents.RaiseCancelButtonClicked();
+            ShowActionButtons();
+            HideCancelButton();
         }
 
+        private void HideCancelButton()
+        {
+            cancelButton.gameObject.SetActive(false);
+        }
+        private void ShowCancelButton()
+        {
+            cancelButton.gameObject.SetActive(true);
+        }
+    
         public void UIActivate()
         {
             Debug.Log($"UIActivate");
             actionPanel.SetActive(true);
+            ShowActionButtons();
+            HideCancelButton();
         }
 
         public void UIDeactivate()
         {
             Debug.Log($"UIDeactivate");
             actionPanel.SetActive(false);
+        }
+
+        public void ShowActionButtons()
+        {
+            attackButton.gameObject.SetActive(true);
+        }
+
+        public void HideActionButtons()
+        {
+            attackButton.gameObject.SetActive(false);
         }
     }
 }

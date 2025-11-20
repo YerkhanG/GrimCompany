@@ -1,21 +1,34 @@
 using System;
+using System.Collections.Generic;
 using entity;
 
 namespace events
 {
     public static class CombatEvents
     {
-        public static event Action<Entity> OnAttackButtonClicked;
+        public static event Action OnAttackButtonClicked;
+        public static event Action OnCancelButtonClicked;
+        public static event Action<List<Entity>> OnTargetCalculated;
         
+        public static event Action<Entity> OnTargetSelected;
         public static event Action<Entity> OnPlayerTurnStarted;
         
         public static event Action OnPlayerTurnEnded;
         public static event Action<Entity, int> OnDamageTaken;
         public static event Action<Entity> OnEntityDied;
-        
-        public static void RaiseAttackButtonClicked(Entity target)
+
+        public static void RaiseTargetCalculated(List<Entity> targets)
         {
-            OnAttackButtonClicked?.Invoke(target);
+            OnTargetCalculated?.Invoke(targets);
+        }
+
+        public static void RaiseTargetSelected(Entity entity)
+        {
+            OnTargetSelected?.Invoke(entity);
+        }
+        public static void RaiseAttackButtonClicked()
+        {
+            OnAttackButtonClicked?.Invoke();
         }
         
         public static void RaiseTurnStarted(Entity entity)
@@ -37,6 +50,11 @@ namespace events
         {
             OnEntityDied?.Invoke(entity);
         }
+
+        public static void RaiseCancelButtonClicked()
+        {
+            OnCancelButtonClicked?.Invoke();
+        }
         public static void ClearAllEvents()
         {
             OnAttackButtonClicked = null;
@@ -44,7 +62,9 @@ namespace events
             OnPlayerTurnEnded = null;
             OnDamageTaken = null;
             OnEntityDied = null;
-
+            OnTargetCalculated = null;
+            OnTargetSelected = null;
+            OnCancelButtonClicked = null;
         }
     }
 }

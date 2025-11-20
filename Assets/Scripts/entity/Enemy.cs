@@ -1,7 +1,5 @@
 using System;
-using controller.combat;
-using entity;
-using events;
+using combat;
 
 namespace entity
 {

@@ -13,10 +13,5 @@ namespace data
         public int maxHealth;
         public int actionSpeed;
         public int baseDamage;
-    
-        [Header("Position Rules")]
-        public int defaultPosition; 
-        public int minRange = 0;    
-        public int maxRange = 1;
     }
 }

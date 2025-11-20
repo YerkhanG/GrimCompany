@@ -1,23 +1,30 @@
-using controller.combat;
+using combat;
+using data;
 using events;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace entity
 {
     public class PlayableCharacter : Entity
     {
+        [Header("Weapon data")] 
+        [SerializeField]private WeaponData weaponData;
+        
+        
         void OnEnable()
         {
-            CombatEvents.OnAttackButtonClicked += HandleAttackRequest;
+            CombatEvents.OnTargetSelected += HandleTargetSelected;
         }
 
         void OnDisable()
         {
-            CombatEvents.OnAttackButtonClicked -= HandleAttackRequest;
+            CombatEvents.OnTargetSelected -= HandleTargetSelected;
         }
-
-        private void HandleAttackRequest(Entity target)
+        public int GetWeaponRange()
+        {
+            return weaponData.range;
+        }
+        private void HandleTargetSelected(Entity target)
         {
             if (CombatManager.Instance.getCurrentActor() != this)
                 return;
@@ -26,7 +33,6 @@ namespace entity
             CombatEvents.RaiseTurnEnded();
             CombatManager.Instance.EndCurrentTurn();
         }
-
         public override void StartTurn()
         {
             base.StartTurn();
