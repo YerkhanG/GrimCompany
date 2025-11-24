@@ -13,5 +13,9 @@ namespace data
         public int maxHealth;
         public int actionSpeed;
         public int baseDamage;
+        [Header("Shield Stats")]
+        [Range(0f, 1f)]
+        public float shieldDamageReduction = 0.5f; 
+        public int shieldDuration = 1;
     }
 }
