@@ -13,9 +13,11 @@ namespace UI.combat
         [SerializeField] private GameObject actionPanel;
         [Header("UI Buttons")]
         [SerializeField] private Button attackButton;
+        [SerializeField] private Button shieldButton;
+        [SerializeField] private Button utilityButton;
         [SerializeField] private Button cancelButton;
-        [Header("For testing")] [SerializeField]
-        private Entity entity;
+        [Header("For testing")] 
+        [SerializeField] private Entity entity;
 
         void Awake()
         {
@@ -26,6 +28,8 @@ namespace UI.combat
         {
             attackButton.onClick.AddListener(OnAttackButtonClicked);
             cancelButton.onClick.AddListener(OnCancelButtonClicked);
+            shieldButton.onClick.AddListener(OnShieldButtonClicked);
+            utilityButton.onClick.AddListener(OnUtilityButtonClicked);
             CombatEvents.OnPlayerTurnStarted += HandleTurnStarted;
             CombatEvents.OnPlayerTurnEnded += HandleTurnEnded;
         }
@@ -33,6 +37,9 @@ namespace UI.combat
         void OnDisable()
         {
             attackButton.onClick.RemoveListener(OnAttackButtonClicked);
+            cancelButton.onClick.RemoveListener(OnCancelButtonClicked);
+            shieldButton.onClick.RemoveListener(OnShieldButtonClicked);
+            utilityButton.onClick.RemoveListener(OnUtilityButtonClicked);
             CombatEvents.OnPlayerTurnStarted -= HandleTurnStarted;
             CombatEvents.OnPlayerTurnEnded -= HandleTurnEnded;
         }
@@ -58,7 +65,20 @@ namespace UI.combat
             ShowActionButtons();
             HideCancelButton();
         }
-
+        
+        private void OnShieldButtonClicked()
+        {
+            CombatEvents.RaiseShieldButtonClicked();
+            /*HideActionButtons();
+            ShowCancelButton();*/
+        }
+        
+        private void OnUtilityButtonClicked()
+        {
+            CombatEvents.RaiseUtilityButtonClicked();
+            HideActionButtons();
+            ShowCancelButton();
+        }
         private void HideCancelButton()
         {
             cancelButton.gameObject.SetActive(false);

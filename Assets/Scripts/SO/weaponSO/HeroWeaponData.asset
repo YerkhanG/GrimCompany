@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a7ac2d48df6a43b1803772e9ec7f8900, type: 3}
-  m_Name: New Weapon Data
+  m_Name: HeroWeaponData
   m_EditorClassIdentifier: Assembly-CSharp::data.WeaponData
   damage: 10
   range: 3

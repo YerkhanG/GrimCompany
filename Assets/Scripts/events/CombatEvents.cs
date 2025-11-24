@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using data;
 using entity;
 
 namespace events
@@ -7,10 +8,14 @@ namespace events
     public static class CombatEvents
     {
         public static event Action OnAttackButtonClicked;
+        public static event Action OnShieldButtonClicked;
+        public static event Action OnUtilityButtonClicked;
         public static event Action OnCancelButtonClicked;
         public static event Action<List<Entity>> OnTargetCalculated;
         
+        public static event Action<List<Entity>, TargetType> OnUtilityTargetCalculated;
         public static event Action<Entity> OnTargetSelected;
+        public static event Action<Entity> OnUtilityTargetSelected;
         public static event Action<Entity> OnPlayerTurnStarted;
         
         public static event Action OnPlayerTurnEnded;
@@ -21,10 +26,17 @@ namespace events
         {
             OnTargetCalculated?.Invoke(targets);
         }
-
+        public static void RaiseUtilityTargetCalculated(List<Entity> targets, TargetType type)
+        {
+            OnUtilityTargetCalculated?.Invoke(targets, type);
+        }
         public static void RaiseTargetSelected(Entity entity)
         {
             OnTargetSelected?.Invoke(entity);
+        }
+        public static void RaiseUtilityTargetSelected(Entity entity)
+        {
+            OnUtilityTargetSelected?.Invoke(entity);
         }
         public static void RaiseAttackButtonClicked()
         {
@@ -55,6 +67,16 @@ namespace events
         {
             OnCancelButtonClicked?.Invoke();
         }
+
+        public static void RaiseShieldButtonClicked()
+        {
+            OnShieldButtonClicked?.Invoke();
+        }
+
+        public static void RaiseUtilityButtonClicked()
+        {
+            OnUtilityButtonClicked?.Invoke();
+        }
         public static void ClearAllEvents()
         {
             OnAttackButtonClicked = null;
@@ -65,6 +87,8 @@ namespace events
             OnTargetCalculated = null;
             OnTargetSelected = null;
             OnCancelButtonClicked = null;
+            OnShieldButtonClicked = null;
+            OnUtilityButtonClicked = null;
         }
     }
 }

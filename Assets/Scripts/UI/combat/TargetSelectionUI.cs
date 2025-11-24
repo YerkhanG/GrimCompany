@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using data;
 using entity;
 using events;
 using UnityEngine;
@@ -8,15 +10,15 @@ namespace UI.combat
 {
     public class TargetSelectionUI : MonoBehaviour
     {
-        [Header("Prefab")]
-        [SerializeField] private GameObject targetIconPrefab;
+        [Header("Prefabs")]
+        [SerializeField] private GameObject swordIconTargetPrefab;
+        [SerializeField] private GameObject buffIconTargetPrefab;
+        [SerializeField] private GameObject debuffIconTargetPrefab;
         [Header("Position")]
         [SerializeField] private Vector2 indicatorOffset = new Vector2(0, 50);
         [Header("References")]
         [SerializeField] private Camera mainCamera;
         [SerializeField] private Canvas canvas;
-        
-        
         
         private List<GameObject> activeIndicators = new List<GameObject>();
         private Dictionary<GameObject, Entity> indicatorToEntity = new Dictionary<GameObject, Entity>();
@@ -31,15 +33,40 @@ namespace UI.combat
         void OnEnable()
         {
             CombatEvents.OnTargetCalculated += HandleTargetsAvailable;
+            CombatEvents.OnUtilityTargetCalculated += HandleUtilityTargetsAvailable;
             CombatEvents.OnCancelButtonClicked += HandleCancelButtonClicked;
         }
 
         void OnDisable()
         {
             CombatEvents.OnTargetCalculated -= HandleTargetsAvailable;
+            CombatEvents.OnUtilityTargetCalculated -= HandleUtilityTargetsAvailable;
             CombatEvents.OnCancelButtonClicked -= HandleCancelButtonClicked;
         }
         private void HandleTargetsAvailable(List<Entity> validTargets)
+        {
+            ShowTargetIndicators(validTargets, swordIconTargetPrefab, OnTargetSelected);
+        }
+        
+        private void HandleUtilityTargetsAvailable(List<Entity> validTargets, TargetType type)
+        {
+            GameObject prefab = GetUtilityPrefab(type);
+            ShowTargetIndicators(validTargets, prefab, OnUtilityTargetSelected);
+        }
+        private GameObject GetUtilityPrefab(TargetType type)
+        {
+            switch (type)
+            {
+                case TargetType.AllAllies:
+                    return buffIconTargetPrefab;
+                case TargetType.AllEnemies:
+                    return debuffIconTargetPrefab;
+                default:
+                    Debug.LogWarning($"Unknown TargetType: {type}. Using buff icon as default.");
+                    return buffIconTargetPrefab;
+            }
+        }
+        private void ShowTargetIndicators(List<Entity> validTargets, GameObject prefab, Action<Entity> onClickCallback)
         {
             ClearIndicators();
             
@@ -50,41 +77,32 @@ namespace UI.combat
             }
 
             isSelecting = true;
+            
             foreach (var target in validTargets)
             {
-                CreateIndicator(target);
+                CreateIndicator(target, prefab, onClickCallback);
             }
         }
-
-        private void CreateIndicator(Entity target)
+        
+        private void CreateIndicator(Entity target, GameObject prefab, Action<Entity> onClickCallback)
         {
-            GameObject indicator = Instantiate(targetIconPrefab, canvas.transform);
+            GameObject indicator = Instantiate(prefab, canvas.transform);
+            
             Button button = indicator.GetComponent<Button>();
             if (button != null)
             {
-                button.onClick.AddListener(() => OnTargetSelected(target));
+                button.onClick.AddListener(() => onClickCallback(target));
             }
             else
             {
                 Debug.LogError("Target indicator prefab is missing Button component!");
             }
+            
             PositionIndicator(indicator, target);
 
             activeIndicators.Add(indicator);
             indicatorToEntity[indicator] = target;
         }
-        private void OnTargetSelected(Entity target)
-        {
-            if (!isSelecting) return;
-            
-            Debug.Log($"Target selected: {target.name}");
-            
-            CombatEvents.RaiseTargetSelected(target);
-            ClearIndicators();
-            
-            isSelecting = false;
-        }
-        
         private void PositionIndicator(GameObject indicator, Entity target)
         {
             Vector3 worldPosition = target.transform.position;
@@ -116,7 +134,28 @@ namespace UI.combat
             indicatorToEntity.Clear();
             isSelecting = false;
         }
-        
+        private void OnTargetSelected(Entity target)
+        {
+            if (!isSelecting) return;
+            
+            Debug.Log($"Target selected: {target.name}");
+            
+            CombatEvents.RaiseTargetSelected(target);
+            ClearIndicators();
+            
+            isSelecting = false;
+        }
+        private void OnUtilityTargetSelected(Entity target)
+        {
+            if (!isSelecting) return;
+            
+            Debug.Log($"Target selected: {target.name}");
+            
+            CombatEvents.RaiseUtilityTargetSelected(target);
+            ClearIndicators();
+            
+            isSelecting = false;
+        }
         private void HandleCancelButtonClicked()
         {
             ClearIndicators();
