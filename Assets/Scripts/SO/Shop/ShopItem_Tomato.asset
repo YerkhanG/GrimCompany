@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b98f6248c06a9ee48961f573b5dd8e6b, type: 3}
+  m_Name: ShopItem_Tomato
+  m_EditorClassIdentifier: Assembly-CSharp::ShopItem
+  category: {fileID: 11400000, guid: 900c7daebd66f324a8aec6e96bbd6fcf, type: 2}
+  itemName: 'Tomato '
+  description: Tomato description
+  price: 12

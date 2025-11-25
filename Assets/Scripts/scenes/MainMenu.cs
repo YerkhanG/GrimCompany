@@ -3,5 +3,5 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-    public void StartGame() => SceneManager.LoadSceneAsync("Combat Scene");
+    public void StartGame() => SceneManager.LoadSceneAsync("Lobby");
 }
