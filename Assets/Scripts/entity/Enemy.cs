@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using combat;
 
 namespace entity
@@ -23,8 +24,13 @@ namespace entity
 
         private Entity FindRandomTarget()
         {
-            int randomIndex = new Random().Next(0, CombatManager.Instance.playerList.Count);
-            return CombatManager.Instance.playerList[randomIndex];
+            var alivePlayers = CombatManager.Instance.playerList.Where(p => p.isAlive).ToList();
+            
+            if (alivePlayers.Count == 0)
+                return null;
+            
+            int randomIndex = UnityEngine.Random.Range(0, alivePlayers.Count);
+            return alivePlayers[randomIndex];
         }
     }
 }

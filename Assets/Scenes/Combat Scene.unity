@@ -163,12 +163,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ace117a9b7244e2bad006cb343f741cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::entity.Enemy
-  entityName: Enemy
+  entityName: Enemy1
   entityData: {fileID: 11400000, guid: 5e5cc050a14c68f488836167aec2163a, type: 2}
   currentHealth: 0
   currentPosition: 0
   isAlive: 1
   isPlayable: 0
+  movementSpeed: 3
+  deathFadeDuration: 0.5
+  spriteRenderer: {fileID: 1964025087}
+  entityTransform: {fileID: 2061595641}
 --- !u!1 &196364083
 GameObject:
   m_ObjectHideFlags: 0
@@ -310,12 +314,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ace117a9b7244e2bad006cb343f741cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::entity.Enemy
-  entityName: Enemy
+  entityName: Enemy2
   entityData: {fileID: 11400000, guid: 5e5cc050a14c68f488836167aec2163a, type: 2}
   currentHealth: 0
   currentPosition: 0
   isAlive: 1
   isPlayable: 0
+  movementSpeed: 3
+  deathFadeDuration: 0.5
+  spriteRenderer: {fileID: 822938065}
+  entityTransform: {fileID: 196364083}
 --- !u!1 &289377283
 GameObject:
   m_ObjectHideFlags: 0
@@ -436,6 +444,10 @@ MonoBehaviour:
   currentPosition: 0
   isAlive: 1
   isPlayable: 1
+  movementSpeed: 3
+  deathFadeDuration: 0.5
+  spriteRenderer: {fileID: 1763353888}
+  entityTransform: {fileID: 1747628322}
   weaponData: {fileID: 11400000, guid: c5898db3de76cf942b5049c54d6ba83a, type: 2}
   utilityData: {fileID: 11400000, guid: a67bb4d1e11301e4081d2e3efe839d9f, type: 2}
 --- !u!1 &470580183
@@ -645,6 +657,8 @@ MonoBehaviour:
   - {fileID: 1595186030}
   - {fileID: 1147171713}
   - {fileID: 470580184}
+  autoRepositionOnDeath: 1
+  repositionDelay: 0.3
 --- !u!4 &608277886
 Transform:
   m_ObjectHideFlags: 0
@@ -867,12 +881,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ace117a9b7244e2bad006cb343f741cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::entity.Enemy
-  entityName: Enemy
+  entityName: Enemy3
   entityData: {fileID: 11400000, guid: 5e5cc050a14c68f488836167aec2163a, type: 2}
   currentHealth: 0
   currentPosition: 0
   isAlive: 1
   isPlayable: 0
+  movementSpeed: 3
+  deathFadeDuration: 0.5
+  spriteRenderer: {fileID: 1219312661}
+  entityTransform: {fileID: 275152149}
 --- !u!1 &767376647
 GameObject:
   m_ObjectHideFlags: 0
@@ -1134,6 +1152,10 @@ MonoBehaviour:
   currentPosition: 0
   isAlive: 1
   isPlayable: 1
+  movementSpeed: 3
+  deathFadeDuration: 0.5
+  spriteRenderer: {fileID: 1739049321}
+  entityTransform: {fileID: 845862897}
   weaponData: {fileID: 11400000, guid: c5898db3de76cf942b5049c54d6ba83a, type: 2}
   utilityData: {fileID: 11400000, guid: a67bb4d1e11301e4081d2e3efe839d9f, type: 2}
 --- !u!1 &845862897
