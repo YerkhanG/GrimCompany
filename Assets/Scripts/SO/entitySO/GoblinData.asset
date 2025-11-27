@@ -16,6 +16,6 @@ MonoBehaviour:
   sprite: {fileID: 0}
   maxHealth: 100
   actionSpeed: 50
-  baseDamage: 250
+  baseDamage: 10
   shieldDamageReduction: 0.5
   shieldDuration: 1

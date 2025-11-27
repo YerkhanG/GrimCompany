@@ -17,5 +17,7 @@ namespace data
         [Range(0f, 1f)]
         public float shieldDamageReduction = 0.5f; 
         public int shieldDuration = 1;
+        [Header("For animations")] 
+        public float movementSpeed = 10f;
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using data;
 using entity;
+using UnityEngine;
 
 namespace events
 {
@@ -12,15 +13,14 @@ namespace events
         public static event Action OnUtilityButtonClicked;
         public static event Action OnCancelButtonClicked;
         public static event Action<List<Entity>> OnTargetCalculated;
-        
         public static event Action<List<Entity>, TargetType> OnUtilityTargetCalculated;
         public static event Action<Entity> OnTargetSelected;
         public static event Action<Entity> OnUtilityTargetSelected;
         public static event Action<Entity> OnPlayerTurnStarted;
-        
         public static event Action OnPlayerTurnEnded;
         public static event Action<Entity, int> OnDamageTaken;
         public static event Action<Entity> OnEntityDied;
+        public static event Action<GameObject> OnEntityDeathAnimation;
 
         public static void RaiseTargetCalculated(List<Entity> targets)
         {
@@ -62,7 +62,11 @@ namespace events
         {
             OnEntityDied?.Invoke(entity);
         }
-
+        
+        public static void RaiseEntityDeathAnimation(GameObject deadEntity)
+        {
+            OnEntityDeathAnimation?.Invoke(deadEntity);
+        }
         public static void RaiseCancelButtonClicked()
         {
             OnCancelButtonClicked?.Invoke();

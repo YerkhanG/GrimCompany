@@ -15,30 +15,28 @@ namespace entity
         public int currentHealth;
         public int currentPosition;
         public int ActionSpeed => entityData.actionSpeed;
-        public int BaseDamage => entityData.baseDamage;
+        public int BaseDamage => entityData.baseDamage; 
         public int MaxHealth => entityData.maxHealth;
         public bool isAlive = true;
         public bool isPlayable;
-        [Header("Death and repositioning")]
-        [SerializeField] private float movementSpeed = 300f;
-        [SerializeField] private float deathFadeDuration = 0.5f;
-        [SerializeField] private SpriteRenderer spriteRenderer;
-        [SerializeField] private GameObject entityTransform;
+        private GameObject entityParentObject;
+        [Header("Repositioning")]
         private Vector3 targetPosition;
         private bool isMoving = false;
         public void Awake()
         {
             InitializeStats();
             targetPosition = transform.position;
+            entityParentObject = transform.parent.gameObject;
         }
         private void Update()
         {
             if (isMoving)
             { 
-                entityTransform.transform.position = Vector3.MoveTowards(
+                entityParentObject.transform.position = Vector3.MoveTowards(
                     transform.position, 
                     targetPosition, 
-                    movementSpeed * Time.deltaTime
+                    entityData.movementSpeed * Time.deltaTime
                 );
                 
                 if (Vector3.Distance(transform.position, targetPosition) < 0.01f)
@@ -62,7 +60,6 @@ namespace entity
                 Die();
             }
         }
-        
         public virtual void StartTurn()
         {
             Debug.Log($"StartTurn by {entityName}");
@@ -81,8 +78,8 @@ namespace entity
         {
             if (!isAlive) return;
             isAlive = false;
-            StartCoroutine(PlayDeathAnimation());
             CombatEvents.RaiseEntityDied(this);
+            CombatEvents.RaiseEntityDeathAnimation(entityParentObject);
         }
         public void SetTargetPosition(Vector3 newPosition)
         {
@@ -90,27 +87,6 @@ namespace entity
             Debug.Log($"Setting target position to {newPosition}");
             targetPosition = newPosition;
             isMoving = true;
-        }
-
-        private IEnumerator PlayDeathAnimation()
-        {
-            if (spriteRenderer)
-            {
-                float elapsedTime = 0f;
-                Color originalColor = spriteRenderer.color;
-                while (elapsedTime < deathFadeDuration)
-                {
-                    elapsedTime += Time.deltaTime;
-                    float alpha = Mathf.Lerp(originalColor.a, 0, elapsedTime / deathFadeDuration);
-                    spriteRenderer.color = new Color(originalColor.r, originalColor.g, originalColor.b, alpha);
-                    yield return null;
-                }
-            }
-            else
-            {
-                yield return new WaitForSeconds(deathFadeDuration);
-            }
-            entityTransform.gameObject.SetActive(false);
         }
     }
 }
