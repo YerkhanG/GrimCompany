@@ -1,5 +1,7 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using data;
 using entity;
 using events;
@@ -14,16 +16,23 @@ namespace combat
         public List<Transform> playableCharPositions = new List<Transform>(4);
         public List<Transform> enemyPositions = new List<Transform>(4);
         
+        [Header("Repositioning Settings")]
+        [SerializeField] private bool autoRepositionOnDeath = true;
+        [SerializeField] private float repositionDelay = 0.3f;
+        
         private Dictionary<Entity, int> entityPositions = new Dictionary<Entity, int>();
         void OnEnable()
         {
             CombatEvents.OnAttackButtonClicked += HandleAttackRequest;
             CombatEvents.OnUtilityButtonClicked += HandleUtilityButtonClicked;
+            CombatEvents.OnEntityDied += HandleEntityDeath;
         }
+
         void OnDisable()
         {
             CombatEvents.OnAttackButtonClicked -= HandleAttackRequest;
             CombatEvents.OnUtilityButtonClicked -= HandleUtilityButtonClicked;
+            CombatEvents.OnEntityDied -= HandleEntityDeath;
         }
         private List<Entity> CalculateUtilityTargets(PlayableCharacter user)
         {
@@ -80,6 +89,65 @@ namespace combat
             List<Entity> targets = CalculateUtilityTargets(currentActor);
             CombatEvents.RaiseUtilityTargetCalculated(targets, currentActor.utilityData.targetType);
         }
+        private void HandleEntityDeath(Entity deadEntity)
+        {
+            if (!entityPositions.ContainsKey(deadEntity))
+            {
+                Debug.LogWarning($"Dead entity {deadEntity.name} not found by PositionManager");
+                return;
+            }
+
+            if (autoRepositionOnDeath)
+            {
+                StartCoroutine(DelayedReposition(deadEntity));
+            }
+        }
+
+        private IEnumerator DelayedReposition(Entity entity)
+        {
+            yield return new WaitForSeconds(repositionDelay);
+            bool isPlayer = CombatManager.Instance.playerList.Contains(entity);
+            List<Entity> team = isPlayer ? CombatManager.Instance.playerList : CombatManager.Instance.enemyList;
+            List<Transform> positions = isPlayer ? playableCharPositions : enemyPositions;
+            
+            ReorganizeTeam(team, positions);
+        }
+
+        private void ReorganizeTeam(List<Entity> team, List<Transform> positions)
+        {
+            //MOVE
+            var livingEntities = team
+                .Where(e => e.isAlive && entityPositions.ContainsKey(e))
+                .OrderBy(e => entityPositions[e])
+                .ToList();
+            for (int i = 0; i < livingEntities.Count; i++)
+            {
+                Entity entity = livingEntities[i];
+                int oldPosition = entityPositions[entity];
+                int newPosition = i;
+                
+                entityPositions[entity] = newPosition;
+                entity.currentPosition = newPosition;
+                
+                if (oldPosition != newPosition && newPosition < positions.Count)
+                {
+                    Vector3 newWorldPosition = positions[newPosition].position;
+                    entity.SetTargetPosition(newWorldPosition);
+                    Debug.Log($"{entity.entityName} moving: position {oldPosition} → {newPosition}");
+                }
+                //ClEAN
+                var deadEntities = team.Where(e => !e.isAlive).ToList();
+                foreach (var dead in deadEntities)
+                {
+                    if (entityPositions.ContainsKey(dead))
+                    {
+                        entityPositions.Remove(dead);
+                        Debug.Log($"Removed {dead.entityName} from position tracking");
+                    }
+                }
+            }
+        }
+
         public void RegisterEntityPosition(Entity entity, int positionIndex)
         {
             entityPositions[entity] = positionIndex;

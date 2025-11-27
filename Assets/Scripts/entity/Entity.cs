@@ -1,5 +1,6 @@
-using System;
+using System.Collections;
 using data;
+using events;
 using UnityEngine;
 
 namespace entity
@@ -14,13 +15,36 @@ namespace entity
         public int currentHealth;
         public int currentPosition;
         public int ActionSpeed => entityData.actionSpeed;
-        public int BaseDamage => entityData.baseDamage;
+        public int BaseDamage => entityData.baseDamage; 
         public int MaxHealth => entityData.maxHealth;
         public bool isAlive = true;
         public bool isPlayable;
+        private GameObject entityParentObject;
+        [Header("Repositioning")]
+        private Vector3 targetPosition;
+        private bool isMoving = false;
         public void Awake()
         {
             InitializeStats();
+            targetPosition = transform.position;
+            entityParentObject = transform.parent.gameObject;
+        }
+        private void Update()
+        {
+            if (isMoving)
+            { 
+                entityParentObject.transform.position = Vector3.MoveTowards(
+                    transform.position, 
+                    targetPosition, 
+                    entityData.movementSpeed * Time.deltaTime
+                );
+                
+                if (Vector3.Distance(transform.position, targetPosition) < 0.01f)
+                {
+                    transform.position = targetPosition;
+                    isMoving = false;
+                }
+            }
         }
         private void InitializeStats()
         {
@@ -29,13 +53,13 @@ namespace entity
 
         public virtual void TakeDamage(int  damage)
         {
+            if (!isAlive) return;
             currentHealth -= damage;
             if (currentHealth <= 0)
             {
                 Die();
             }
         }
-
         public virtual void StartTurn()
         {
             Debug.Log($"StartTurn by {entityName}");
@@ -52,8 +76,17 @@ namespace entity
         }
         public virtual void Die()
         {
+            if (!isAlive) return;
             isAlive = false;
-            
+            CombatEvents.RaiseEntityDied(this);
+            CombatEvents.RaiseEntityDeathAnimation(entityParentObject);
+        }
+        public void SetTargetPosition(Vector3 newPosition)
+        {
+            if (!isAlive || !gameObject.activeInHierarchy) return;
+            Debug.Log($"Setting target position to {newPosition}");
+            targetPosition = newPosition;
+            isMoving = true;
         }
     }
 }
