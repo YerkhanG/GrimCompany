@@ -14,15 +14,17 @@ namespace UI.combat
         [SerializeField] private GameObject swordIconTargetPrefab;
         [SerializeField] private GameObject buffIconTargetPrefab;
         [SerializeField] private GameObject debuffIconTargetPrefab;
+        [SerializeField] private GameObject actorIconTargetPrefab;
         [Header("Position")]
-        [SerializeField] private Vector2 indicatorOffset = new Vector2(0, 50);
+        [SerializeField] private Vector2 targetIndicatorOffset ;
+        [SerializeField] private Vector2 actorIndicatorOffset;
         [Header("References")]
         [SerializeField] private Camera mainCamera;
         [SerializeField] private Canvas canvas;
         
         private List<GameObject> activeIndicators = new List<GameObject>();
         private Dictionary<GameObject, Entity> indicatorToEntity = new Dictionary<GameObject, Entity>();
-        
+        private GameObject arrowIndicator;
         private bool isSelecting = false;
         
         void Awake()
@@ -35,6 +37,7 @@ namespace UI.combat
             CombatEvents.OnTargetCalculated += HandleTargetsAvailable;
             CombatEvents.OnUtilityTargetCalculated += HandleUtilityTargetsAvailable;
             CombatEvents.OnCancelButtonClicked += HandleCancelButtonClicked;
+            CombatEvents.OnCurrentActorPicked += HandleCurrentActorPicked;
         }
 
         void OnDisable()
@@ -42,7 +45,34 @@ namespace UI.combat
             CombatEvents.OnTargetCalculated -= HandleTargetsAvailable;
             CombatEvents.OnUtilityTargetCalculated -= HandleUtilityTargetsAvailable;
             CombatEvents.OnCancelButtonClicked -= HandleCancelButtonClicked;
+            CombatEvents.OnCurrentActorPicked += HandleCurrentActorPicked;
         }
+
+        private void HandleCurrentActorPicked(Entity currentActor)
+        {
+            if (currentActor == null) return;
+            ShowCurrentActorArrow(currentActor);
+        }
+
+        private void ShowCurrentActorArrow(Entity currentActor)
+        {
+            if (arrowIndicator != null)
+            {
+                Destroy(arrowIndicator);
+            }
+            if (actorIconTargetPrefab != null)
+            {
+                arrowIndicator = Instantiate(actorIconTargetPrefab, canvas.transform);
+                PositionIndicator(arrowIndicator, currentActor, actorIndicatorOffset);
+                
+                Debug.Log($"Turn Arrow: Showing below {currentActor.name}");
+            }
+            else
+            {
+                Debug.LogWarning("Turn arrow prefab is not assigned!");
+            }
+        }
+
         private void HandleTargetsAvailable(List<Entity> validTargets)
         {
             ShowTargetIndicators(validTargets, swordIconTargetPrefab, OnTargetSelected);
@@ -98,12 +128,12 @@ namespace UI.combat
                 Debug.LogError("Target indicator prefab is missing Button component!");
             }
             
-            PositionIndicator(indicator, target);
+            PositionIndicator(indicator, target,targetIndicatorOffset);
 
             activeIndicators.Add(indicator);
             indicatorToEntity[indicator] = target;
         }
-        private void PositionIndicator(GameObject indicator, Entity target)
+        private void PositionIndicator(GameObject indicator, Entity target, Vector2 indicatorOffset)
         {
             Vector3 worldPosition = target.transform.position;
             

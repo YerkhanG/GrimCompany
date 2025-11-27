@@ -9,8 +9,6 @@ namespace entity
 {
     public class PlayableCharacter : Entity
     {
-        [Header("Weapon data")] 
-        [SerializeField] private WeaponData weaponData;
         [Header("Utility data")]
         public UtilityData utilityData;
         [Header("Buff/Debuff State")]
@@ -33,9 +31,9 @@ namespace entity
             CombatEvents.OnUtilityTargetSelected -= HandleUtilityTargetSelected;
             CombatEvents.OnShieldButtonClicked -= HandleShieldClicked;
         }
-        public int GetWeaponRange()
+        public int GetRange()
         {
-            return weaponData.range;
+            return entityData.range;
         }
         private void HandleTargetSelected(Entity target)
         {
@@ -43,7 +41,7 @@ namespace entity
                 return;
             
             Attack(target);
-            CombatEvents.RaiseTurnEnded();
+            CombatEvents.RaisePlayerTurnEnded();
             CombatManager.Instance.EndCurrentTurn();
         }
         
@@ -52,13 +50,13 @@ namespace entity
             if (CombatManager.Instance.getCurrentActor() != this)
                 return;
             utilityData.Execute(this,target);
-            CombatEvents.RaiseTurnEnded();
+            CombatEvents.RaisePlayerTurnEnded();
             CombatManager.Instance.EndCurrentTurn();
         }
         public override void StartTurn()
         {
             base.StartTurn();
-            CombatEvents.RaiseTurnStarted(this);
+            CombatEvents.RaisePlayerTurnStarted(this);
         }
         
         private void HandleShieldClicked()
@@ -66,7 +64,7 @@ namespace entity
             if (CombatManager.Instance.getCurrentActor() != this)
                 return;
             ActivateShield();
-            CombatEvents.RaiseTurnEnded();
+            CombatEvents.RaisePlayerTurnEnded();
             CombatManager.Instance.EndCurrentTurn();
         }
 

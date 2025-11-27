@@ -17,6 +17,9 @@ namespace events
         public static event Action<Entity> OnTargetSelected;
         public static event Action<Entity> OnUtilityTargetSelected;
         public static event Action<Entity> OnPlayerTurnStarted;
+        
+        //For now this event is made for the indicator of whose turn is it
+        public static event Action<Entity> OnCurrentActorPicked;
         public static event Action OnPlayerTurnEnded;
         public static event Action<Entity, int> OnDamageTaken;
         public static event Action<Entity> OnEntityDied;
@@ -43,12 +46,16 @@ namespace events
             OnAttackButtonClicked?.Invoke();
         }
         
-        public static void RaiseTurnStarted(Entity entity)
+        public static void RaisePlayerTurnStarted(Entity entity)
         {
             OnPlayerTurnStarted?.Invoke(entity);
         }
-        
-        public static void RaiseTurnEnded()
+
+        public static void RaiseCurrentActorPicked(Entity entity)
+        {
+            OnCurrentActorPicked?.Invoke(entity);
+        }
+        public static void RaisePlayerTurnEnded()
         {
             OnPlayerTurnEnded?.Invoke();
         }

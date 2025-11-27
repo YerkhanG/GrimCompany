@@ -58,7 +58,7 @@ namespace combat
                 return targets;
             
             int actorPosition = entityPositions[actor];
-            int weaponRange = actor.GetWeaponRange();
+            int weaponRange = actor.GetRange();
             
             foreach (var target in potentialTargets)
             {

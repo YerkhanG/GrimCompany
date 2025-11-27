@@ -169,10 +169,6 @@ MonoBehaviour:
   currentPosition: 0
   isAlive: 1
   isPlayable: 0
-  movementSpeed: 3
-  deathFadeDuration: 0.5
-  spriteRenderer: {fileID: 1964025087}
-  entityTransform: {fileID: 2061595641}
 --- !u!1 &196364083
 GameObject:
   m_ObjectHideFlags: 0
@@ -320,10 +316,6 @@ MonoBehaviour:
   currentPosition: 0
   isAlive: 1
   isPlayable: 0
-  movementSpeed: 3
-  deathFadeDuration: 0.5
-  spriteRenderer: {fileID: 822938065}
-  entityTransform: {fileID: 196364083}
 --- !u!1 &289377283
 GameObject:
   m_ObjectHideFlags: 0
@@ -444,11 +436,6 @@ MonoBehaviour:
   currentPosition: 0
   isAlive: 1
   isPlayable: 1
-  movementSpeed: 3
-  deathFadeDuration: 0.5
-  spriteRenderer: {fileID: 1763353888}
-  entityTransform: {fileID: 1747628322}
-  weaponData: {fileID: 11400000, guid: c5898db3de76cf942b5049c54d6ba83a, type: 2}
   utilityData: {fileID: 11400000, guid: a67bb4d1e11301e4081d2e3efe839d9f, type: 2}
 --- !u!1 &470580183
 GameObject:
@@ -794,10 +781,10 @@ RectTransform:
   - {fileID: 1016238240}
   m_Father: {fileID: 1133642993}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -20, y: -20}
+  m_AnchorMin: {x: 0.0062499996, y: 0}
+  m_AnchorMax: {x: 0.49374998, y: 0.42314816}
+  m_AnchoredPosition: {x: 0, y: 4.200012}
+  m_SizeDelta: {x: 4, y: -11.599998}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &653687204
 MonoBehaviour:
@@ -887,10 +874,6 @@ MonoBehaviour:
   currentPosition: 0
   isAlive: 1
   isPlayable: 0
-  movementSpeed: 3
-  deathFadeDuration: 0.5
-  spriteRenderer: {fileID: 1219312661}
-  entityTransform: {fileID: 275152149}
 --- !u!1 &767376647
 GameObject:
   m_ObjectHideFlags: 0
@@ -1012,6 +995,51 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!1 &776197703
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 776197705}
+  - component: {fileID: 776197704}
+  m_Layer: 0
+  m_Name: Entity Animation Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &776197704
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 776197703}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a0695cd201d4473bbd974e292723b07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::animation.EntityAnimationManager
+  deathFadeDuration: 0.5
+--- !u!4 &776197705
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 776197703}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.20696, y: -1.1884, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &822938063
 GameObject:
   m_ObjectHideFlags: 0
@@ -1152,11 +1180,6 @@ MonoBehaviour:
   currentPosition: 0
   isAlive: 1
   isPlayable: 1
-  movementSpeed: 3
-  deathFadeDuration: 0.5
-  spriteRenderer: {fileID: 1739049321}
-  entityTransform: {fileID: 845862897}
-  weaponData: {fileID: 11400000, guid: c5898db3de76cf942b5049c54d6ba83a, type: 2}
   utilityData: {fileID: 11400000, guid: a67bb4d1e11301e4081d2e3efe839d9f, type: 2}
 --- !u!1 &845862897
 GameObject:
@@ -2129,7 +2152,9 @@ MonoBehaviour:
   swordIconTargetPrefab: {fileID: 5292997486043486170, guid: 2006eeb11bae70c44ac0dda7e44f5f41, type: 3}
   buffIconTargetPrefab: {fileID: 1272160535239145037, guid: a092920e7ddead84d9ffb5fcc6f32532, type: 3}
   debuffIconTargetPrefab: {fileID: 667951971289077153, guid: 4bdb0ffe22b2ee6469eb0784a39bebff, type: 3}
-  indicatorOffset: {x: 30, y: 100}
+  actorIconTargetPrefab: {fileID: 6534360404659199960, guid: 4689120ba808b334d992d2747d902b94, type: 3}
+  targetIndicatorOffset: {x: 25, y: 90}
+  actorIndicatorOffset: {x: 25, y: -80}
   mainCamera: {fileID: 519420031}
   canvas: {fileID: 1133642992}
 --- !u!4 &1334748335
@@ -2733,7 +2758,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.185}
   m_AnchorMax: {x: 0.28035718, y: 0.409}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -0.00015258789}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1808529493
@@ -3123,3 +3148,4 @@ SceneRoots:
   - {fileID: 289377284}
   - {fileID: 394445982}
   - {fileID: 1334748335}
+  - {fileID: 776197705}

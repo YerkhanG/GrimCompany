@@ -85,6 +85,7 @@ namespace combat
             if (currentActor.isPlayable) combatState = CombatState.PlayerTurn;
             else combatState = CombatState.EnemyTurn;
             currentActor.StartTurn();
+            CombatEvents.RaiseCurrentActorPicked(currentActor);
         }
 
         private void LoseGame()
