@@ -22,7 +22,7 @@ public class RunManager : MonoBehaviour
 {
     public static RunManager Instance { get; private set; }
 
-    [Header("Map state")] public MapNode[] currentMapPath; // assign in inspector for now
+    [Header("Map state")] public MapNode[] currentMapPath;
 
     // Start BEFORE any node; set this to -1 in inspector or here:
     public int currentNodeIndex = -1;
@@ -93,28 +93,29 @@ public class RunManager : MonoBehaviour
 
     public void OnBattleWon()
     {
-        // Rewards
-        gold += 20f;
-
         var node = currentMapPath[currentNodeIndex];
+
+        float bounty = 20f;
+
+        // Give bounty to Purchaser
+        if (Purchaser.Instance != null)
+        {
+            Purchaser.Instance.AddFunds(bounty);
+        }
 
         if (node.type == MapNodeType.Boss)
         {
-            // Optional: reset run state for a new run
             currentNodeIndex = -1;
-            // maybe reset gold, map, etc.
 
             SceneManager.LoadScene("Lobby");
-            return; // IMPORTANT: do not also load Map
+            return;
         }
 
-        // Normal node: go back to map to pick next node
         SceneManager.LoadScene("Map Scene");
     }
 
     public void OnBattleLost()
     {
-        // On defeat, straight to lobby (or a game-over screen)
         SceneManager.LoadScene("Lobby");
     }
 }
