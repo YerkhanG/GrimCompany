@@ -135,6 +135,23 @@ namespace combat
     
             Debug.Log($"Registered {playerList.Count} player positions and {enemyList.Count} enemy positions");
         }
+        
+        public List<Entity> GetAllAllies(Entity caster)
+        {
+            if (caster.isPlayable)
+                return playerList.Where(e => e.isAlive).ToList();
+            else
+                return enemyList.Where(e => e.isAlive).ToList();
+        }
+
+        public List<Entity> GetAllEnemies(Entity caster)
+        {
+            if (caster.isPlayable)
+                return enemyList.Where(e => e.isAlive).ToList();
+            else
+                return playerList.Where(e => e.isAlive).ToList();
+        }
+        
         void OnDestroy()
         {
             if (Instance == this)

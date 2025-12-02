@@ -1,4 +1,5 @@
 using System.Collections;
+using combat;
 using data;
 using events;
 using UnityEngine;
@@ -23,6 +24,11 @@ namespace entity
         [Header("Repositioning")]
         private Vector3 targetPosition;
         private bool isMoving = false;
+        
+        [Header("Status Effects")]
+        private int stunTurnsRemaining = 0;
+        public bool IsStunned => stunTurnsRemaining > 0;
+        
         public void Awake()
         {
             InitializeStats();
@@ -62,6 +68,16 @@ namespace entity
         }
         public virtual void StartTurn()
         {
+            if (CombatManager.Instance.getCurrentActor() != this)
+                return;
+            
+            if (stunTurnsRemaining > 0)
+            {
+                Debug.Log($"{entityName} is stunned and cannot act!");
+                stunTurnsRemaining--;
+                return;
+            }
+            
             Debug.Log($"StartTurn by {entityName}");
         }
 
@@ -88,5 +104,13 @@ namespace entity
             targetPosition = newPosition;
             isMoving = true;
         }
+
+        public void ApplyStun(int duration)
+        {
+            stunTurnsRemaining = Mathf.Max(stunTurnsRemaining, duration);
+            Debug.Log($"{entityName} stunned for {duration} turns!");
+        }
+        
+        
     }
 }
