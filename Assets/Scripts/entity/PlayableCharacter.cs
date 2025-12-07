@@ -3,7 +3,6 @@ using combat;
 using data;
 using events;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace entity
 {
@@ -18,19 +17,7 @@ namespace entity
         [Header("Shield State")]
         private bool isShielding = false;
         private int shieldTurnsRemaining = 0;
-        void OnEnable()
-        {
-            CombatEvents.OnTargetSelected += HandleTargetSelected;
-            CombatEvents.OnUtilityTargetSelected += HandleUtilityTargetSelected;
-            CombatEvents.OnShieldButtonClicked += HandleShieldClicked;
-        }
-
-        void OnDisable()
-        {
-            CombatEvents.OnTargetSelected -= HandleTargetSelected;
-            CombatEvents.OnUtilityTargetSelected -= HandleUtilityTargetSelected;
-            CombatEvents.OnShieldButtonClicked -= HandleShieldClicked;
-        }
+        
         public int GetRange()
         {
             return entityData.range;
@@ -55,6 +42,8 @@ namespace entity
         }
         public override void StartTurn()
         {
+            InitSubscriptions();
+            
             base.StartTurn();
             CombatEvents.RaisePlayerTurnStarted(this);
         }
@@ -103,6 +92,7 @@ namespace entity
         }
         public override void EndTurn()
         {
+            InitUnsubscriptions();
             base.EndTurn();
             if (buffTurnsRemaining > 0)
             {
@@ -126,5 +116,18 @@ namespace entity
             }
         }
 
+        private void InitSubscriptions()
+        {
+            CombatEvents.OnTargetSelected += HandleTargetSelected;
+            CombatEvents.OnUtilityTargetSelected += HandleUtilityTargetSelected;
+            CombatEvents.OnShieldButtonClicked += HandleShieldClicked;
+        }
+        
+        private void InitUnsubscriptions()
+        {
+            CombatEvents.OnTargetSelected -= HandleTargetSelected;
+            CombatEvents.OnUtilityTargetSelected -= HandleUtilityTargetSelected;
+            CombatEvents.OnShieldButtonClicked -= HandleShieldClicked;        
+        }
     }
 }

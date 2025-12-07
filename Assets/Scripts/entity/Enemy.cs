@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using combat;
+using UnityEngine;
 
 namespace entity
 {
@@ -9,11 +10,18 @@ namespace entity
         public override void StartTurn()
         {
             base.StartTurn();
+    
+            if (IsStunned) 
+                return;
+        
             Invoke(nameof(PerformAiAction), 0.5f);
         }
 
         public void PerformAiAction()
         {
+            if (CombatManager.Instance.getCurrentActor() != this)
+                return;
+        
             Entity target = FindRandomTarget();
             if (target != null)
             {
