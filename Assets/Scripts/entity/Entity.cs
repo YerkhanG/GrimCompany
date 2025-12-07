@@ -75,6 +75,7 @@ namespace entity
             {
                 Debug.Log($"{entityName} is stunned and cannot act!");
                 stunTurnsRemaining--;
+                CombatManager.Instance.EndCurrentTurn();
                 return;
             }
             

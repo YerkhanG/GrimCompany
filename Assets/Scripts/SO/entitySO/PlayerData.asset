@@ -15,7 +15,7 @@ MonoBehaviour:
   entityName: player
   sprite: {fileID: 0}
   maxHealth: 250
-  actionSpeed: 100
+  actionSpeed: 20
   baseDamage: 50
   range: 3
   shieldDamageReduction: 0.8

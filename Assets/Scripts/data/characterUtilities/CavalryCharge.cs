@@ -17,7 +17,6 @@ namespace data
                 int damage = Mathf.RoundToInt(caster.BaseDamage * damageMultiplier);
                 target.TakeDamage(damage);
                 
-                // If target is an enemy, apply stun (you'll need to add stun logic to Entity)
                 if (target is Enemy enemy)
                 {
                     enemy.ApplyStun(stunDuration);

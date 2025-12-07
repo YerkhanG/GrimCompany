@@ -119,6 +119,17 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!114 &18595110 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7667955279519742465, guid: 6bb8723598c765546ab77c0dc89dedf2, type: 3}
+  m_PrefabInstance: {fileID: 5353900686698715991}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce3aa88bfb0c4a9bbdc6b607204dd00c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::entity.PlayableCharacter
 --- !u!1 &62220659
 GameObject:
   m_ObjectHideFlags: 0
@@ -184,7 +195,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &196364084
 Transform:
   m_ObjectHideFlags: 0
@@ -249,7 +260,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &275152150
 Transform:
   m_ObjectHideFlags: 0
@@ -1162,7 +1173,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &845862899
 Transform:
   m_ObjectHideFlags: 0
@@ -1657,9 +1668,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::controller.combat.CombatManager
   playerList:
+  - {fileID: 843392987}
   - {fileID: 740062152}
+  - {fileID: 1183189921}
+  - {fileID: 18595110}
   enemyList:
   - {fileID: 62220661}
+  - {fileID: 283240027}
+  - {fileID: 719725837}
   allCombatants: []
   combatState: 0
   positionManager: {fileID: 608277885}
@@ -1678,6 +1694,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1183189921 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1814623726727893658, guid: d293da30d844fc348835cab44d36b5b1, type: 3}
+  m_PrefabInstance: {fileID: 2347109122414516075}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce3aa88bfb0c4a9bbdc6b607204dd00c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::entity.PlayableCharacter
 --- !u!1 &1219312659
 GameObject:
   m_ObjectHideFlags: 0
@@ -2999,7 +3026,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 804251562330848205, guid: d293da30d844fc348835cab44d36b5b1, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1168712028049396154, guid: d293da30d844fc348835cab44d36b5b1, type: 3}
       propertyPath: m_LocalScale.x
@@ -3007,10 +3034,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1168712028049396154, guid: d293da30d844fc348835cab44d36b5b1, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1814623726727893658, guid: d293da30d844fc348835cab44d36b5b1, type: 3}
-      propertyPath: isPlayable
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6788276179433499226, guid: d293da30d844fc348835cab44d36b5b1, type: 3}
@@ -3133,7 +3156,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7251639663174749581, guid: 6bb8723598c765546ab77c0dc89dedf2, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9208129535657855627, guid: 6bb8723598c765546ab77c0dc89dedf2, type: 3}
       propertyPath: m_LocalPosition.x

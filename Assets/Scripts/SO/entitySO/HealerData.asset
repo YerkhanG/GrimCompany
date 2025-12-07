@@ -15,7 +15,7 @@ MonoBehaviour:
   entityName: Healer
   sprite: {fileID: 0}
   maxHealth: 50
-  actionSpeed: 7
+  actionSpeed: 15
   baseDamage: 10
   range: 1
   shieldDamageReduction: 0.5

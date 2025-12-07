@@ -15,7 +15,9 @@ MonoBehaviour:
   entityName: goblin
   sprite: {fileID: 0}
   maxHealth: 100
-  actionSpeed: 50
+  actionSpeed: 25
   baseDamage: 10
+  range: 0
   shieldDamageReduction: 0.5
   shieldDuration: 1
+  movementSpeed: 10

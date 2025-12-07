@@ -1,3 +1,4 @@
+using System;
 using combat;
 using entity;
 using UnityEngine;
@@ -15,18 +16,14 @@ namespace data
         {
             if (targetType == TargetType.AllAllies)
             {
-                var allies = CombatManager.Instance.GetAllAllies(caster);
-                foreach (var ally in allies)
+                if (target != null && target.isAlive)
                 {
-                    if (ally.isAlive && (healSelf || ally != caster))
-                    {
-                        Heal(ally, caster.entityName);
-                    }
+                    Heal(target, caster.entityName);
                 }
-            }
-            else if (target != null && target.isAlive)
-            {
-                Heal(target, caster.entityName);
+                else
+                {
+                    Debug.Log("No target found to heal");
+                }
             }
         }
 

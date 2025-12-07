@@ -15,7 +15,7 @@ MonoBehaviour:
   entityName: Archer
   sprite: {fileID: 0}
   maxHealth: 80
-  actionSpeed: 7
+  actionSpeed: 15
   baseDamage: 25
   range: 6
   shieldDamageReduction: 0.5
