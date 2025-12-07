@@ -17,7 +17,7 @@ namespace events
         public static event Action<Entity> OnTargetSelected;
         public static event Action<Entity> OnUtilityTargetSelected;
         public static event Action<Entity> OnPlayerTurnStarted;
-        
+
         //For now this event is made for the indicator of whose turn is it
         public static event Action<Entity> OnCurrentActorPicked;
         public static event Action OnPlayerTurnEnded;
@@ -29,23 +29,27 @@ namespace events
         {
             OnTargetCalculated?.Invoke(targets);
         }
+
         public static void RaiseUtilityTargetCalculated(List<Entity> targets, TargetType type)
         {
             OnUtilityTargetCalculated?.Invoke(targets, type);
         }
+
         public static void RaiseTargetSelected(Entity entity)
         {
             OnTargetSelected?.Invoke(entity);
         }
+
         public static void RaiseUtilityTargetSelected(Entity entity)
         {
             OnUtilityTargetSelected?.Invoke(entity);
         }
+
         public static void RaiseAttackButtonClicked()
         {
             OnAttackButtonClicked?.Invoke();
         }
-        
+
         public static void RaisePlayerTurnStarted(Entity entity)
         {
             OnPlayerTurnStarted?.Invoke(entity);
@@ -55,25 +59,27 @@ namespace events
         {
             OnCurrentActorPicked?.Invoke(entity);
         }
+
         public static void RaisePlayerTurnEnded()
         {
             OnPlayerTurnEnded?.Invoke();
         }
-        
+
         public static void RaiseDamageTaken(Entity entity, int damage)
         {
             OnDamageTaken?.Invoke(entity, damage);
         }
-        
+
         public static void RaiseEntityDied(Entity entity)
         {
             OnEntityDied?.Invoke(entity);
         }
-        
+
         public static void RaiseEntityDeathAnimation(GameObject deadEntity)
         {
             OnEntityDeathAnimation?.Invoke(deadEntity);
         }
+
         public static void RaiseCancelButtonClicked()
         {
             OnCancelButtonClicked?.Invoke();
@@ -88,6 +94,7 @@ namespace events
         {
             OnUtilityButtonClicked?.Invoke();
         }
+
         public static void ClearAllEvents()
         {
             OnAttackButtonClicked = null;
@@ -100,6 +107,7 @@ namespace events
             OnCancelButtonClicked = null;
             OnShieldButtonClicked = null;
             OnUtilityButtonClicked = null;
+            OnCurrentActorPicked = null;
         }
     }
 }

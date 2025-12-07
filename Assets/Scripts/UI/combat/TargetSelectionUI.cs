@@ -45,7 +45,7 @@ namespace UI.combat
             CombatEvents.OnTargetCalculated -= HandleTargetsAvailable;
             CombatEvents.OnUtilityTargetCalculated -= HandleUtilityTargetsAvailable;
             CombatEvents.OnCancelButtonClicked -= HandleCancelButtonClicked;
-            CombatEvents.OnCurrentActorPicked += HandleCurrentActorPicked;
+            CombatEvents.OnCurrentActorPicked -= HandleCurrentActorPicked;
         }
 
         private void HandleCurrentActorPicked(Entity currentActor)
