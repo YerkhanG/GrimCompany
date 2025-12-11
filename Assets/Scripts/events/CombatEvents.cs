@@ -8,6 +8,7 @@ namespace events
 {
     public static class CombatEvents
     {
+        public static event Action<List<Entity>> OnCombatStarted;
         public static event Action OnAttackButtonClicked;
         public static event Action OnShieldButtonClicked;
         public static event Action OnUtilityButtonClicked;
@@ -17,14 +18,18 @@ namespace events
         public static event Action<Entity> OnTargetSelected;
         public static event Action<Entity> OnUtilityTargetSelected;
         public static event Action<Entity> OnPlayerTurnStarted;
-
         //For now this event is made for the indicator of whose turn is it
         public static event Action<Entity> OnCurrentActorPicked;
         public static event Action OnPlayerTurnEnded;
         public static event Action<Entity, int> OnDamageTaken;
+        public static event Action<Entity, int> OnHealingTaken;
         public static event Action<Entity> OnEntityDied;
         public static event Action<GameObject> OnEntityDeathAnimation;
 
+        public static void RaiseCombatStarted(List<Entity> entities)
+        {
+            OnCombatStarted?.Invoke(entities);
+        }
         public static void RaiseTargetCalculated(List<Entity> targets)
         {
             OnTargetCalculated?.Invoke(targets);
@@ -70,6 +75,11 @@ namespace events
             OnDamageTaken?.Invoke(entity, damage);
         }
 
+        public static void RaiseHealingTaken(Entity entity, int healing)
+        {
+            OnHealingTaken?.Invoke(entity, healing);
+        }
+
         public static void RaiseEntityDied(Entity entity)
         {
             OnEntityDied?.Invoke(entity);
@@ -108,6 +118,8 @@ namespace events
             OnShieldButtonClicked = null;
             OnUtilityButtonClicked = null;
             OnCurrentActorPicked = null;
+            OnHealingTaken = null;
+            OnCombatStarted = null;
         }
     }
 }

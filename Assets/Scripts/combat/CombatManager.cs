@@ -46,6 +46,7 @@ namespace combat
             allCombatants.Sort((a, b) => b.ActionSpeed.CompareTo(a.ActionSpeed));
             SetupEntityPositions();
             CreateActionQueue(allCombatants);
+            CombatEvents.RaiseCombatStarted(allCombatants);
             StartNextTurn();
         }
 
