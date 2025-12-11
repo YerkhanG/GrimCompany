@@ -1,6 +1,7 @@
 using System;
 using combat;
 using entity;
+using events;
 using UnityEngine;
 
 namespace data
@@ -33,6 +34,7 @@ namespace data
             target.currentHealth = Mathf.Min(target.currentHealth + healAmount, target.MaxHealth);
             int actualHeal = target.currentHealth - oldHealth;
             Debug.Log($"{casterName} healed {target.entityName} for {actualHeal} HP!");
+            CombatEvents.RaiseHealingTaken(target, actualHeal);
         }
     }
 }

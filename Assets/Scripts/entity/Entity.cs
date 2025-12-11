@@ -61,6 +61,7 @@ namespace entity
         {
             if (!isAlive) return;
             currentHealth -= damage;
+            CombatEvents.RaiseDamageTaken(this, damage);
             if (currentHealth <= 0)
             {
                 Die();
