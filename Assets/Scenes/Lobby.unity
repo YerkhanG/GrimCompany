@@ -6252,16 +6252,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1012ecd7e5bb8f74f8708d3e19c75d55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RunManager
-  currentMapPath:
-  - id: 0
-    type: 0
-    nextNodeIndices: 01000000
-  - id: 1
-    type: 0
-    nextNodeIndices: 02000000
-  - id: 2
-    type: 3
-    nextNodeIndices: 
+  currentMapPath: []
   currentNodeIndex: -1
   gold: 0
 --- !u!4 &1674216743

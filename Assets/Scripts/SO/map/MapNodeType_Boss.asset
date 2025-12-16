@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69ba8356834dbe44c8d17b9621b55b9b, type: 3}
+  m_Name: MapNodeType_Boss
+  m_EditorClassIdentifier: Assembly-CSharp::MapNodeTypeDef
+  id: boss
+  logicalType: 3
+  nodePrefab: {fileID: 4384979369156329450, guid: ade52a146a5824546a8d8e7c87fa6432, type: 3}
+  rarity: 0.5
+  mustBeUnique: 1
+  onlyAllowedOnLastRow: 1
+  forbiddenOnLastRow: 0
