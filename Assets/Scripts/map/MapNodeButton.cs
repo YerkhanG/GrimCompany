@@ -6,7 +6,6 @@ public class MapNodeButton : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI label;
     [SerializeField] private Button button;
-    [SerializeField] private Image iconImage; // optional for nicer icons
 
     private int _nodeIndex;
     private MapNode _data;

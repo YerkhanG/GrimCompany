@@ -2,22 +2,6 @@ using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public enum MapNodeType
-{
-    Combat,
-    Treasure,
-    Shop,
-    Boss
-}
-
-[System.Serializable]
-public class MapNode
-{
-    public string id; // e.g. "N0", "N1"
-    public MapNodeType type;
-    public int[] nextNodeIndices; // indices in an array for now
-}
-
 public class RunManager : MonoBehaviour
 {
     public static RunManager Instance { get; private set; }
@@ -27,7 +11,6 @@ public class RunManager : MonoBehaviour
     // Start BEFORE any node; set this to -1 in inspector or here:
     public int currentNodeIndex = -1;
 
-    [Header("Economy / party etc.")] public float gold;
     // public List<Hero> party; // later
 
     private void Awake()
@@ -42,8 +25,14 @@ public class RunManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         // Ensure we start before any node
-        if (currentNodeIndex >= currentMapPath.Length)
+        if (currentMapPath == null || currentMapPath.Length == 0)
+        {
             currentNodeIndex = -1;
+        }
+        else if (currentNodeIndex >= currentMapPath.Length)
+        {
+            currentNodeIndex = -1;
+        }
     }
 
     public MapNode CurrentNode =>
@@ -105,8 +94,10 @@ public class RunManager : MonoBehaviour
 
         if (node.type == MapNodeType.Boss)
         {
+            // End of run -> next time Map Scene opens, generate a fresh map
+            currentMapPath = null;
             currentNodeIndex = -1;
-
+            
             SceneManager.LoadScene("Lobby");
             return;
         }
