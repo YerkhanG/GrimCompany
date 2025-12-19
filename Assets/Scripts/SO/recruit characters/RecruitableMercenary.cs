@@ -14,4 +14,5 @@ public class RecruitableMercenary : ScriptableObject
     public int speed; // or haste
 
     [Header("Recruiting")] public float cost;
+    public string prefabName;
 }

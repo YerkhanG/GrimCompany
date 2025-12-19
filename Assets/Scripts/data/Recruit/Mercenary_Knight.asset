@@ -18,3 +18,4 @@ MonoBehaviour:
   attackDamage: 20
   speed: 20
   cost: 50
+  prefabName: Knight
