@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using persistence;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -11,7 +13,7 @@ public class RunManager : MonoBehaviour
     // Start BEFORE any node; set this to -1 in inspector or here:
     public int currentNodeIndex = -1;
 
-    // public List<Hero> party; // later
+    public List<HeroData> party = new List<HeroData>();
 
     private void Awake()
     {

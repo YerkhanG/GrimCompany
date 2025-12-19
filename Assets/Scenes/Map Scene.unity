@@ -345,7 +345,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d7e2d2d0010f754d977cb2834b3a446, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MapGenerator
-  height: 6
+  height: 3
   width: 4
   rowNodeDensity: 0.7
   enemyType: {fileID: 11400000, guid: 252005e63e7d7a241a64945a9a72a059, type: 2}
@@ -356,6 +356,8 @@ MonoBehaviour:
   nodeRoot: {fileID: 1844712944}
   connectionPrefab: {fileID: 8274432180340889707, guid: 1a2949f1fdb28fe46890a0106e3a5904, type: 3}
   connectionRoot: {fileID: 1429752163}
+  horizontalMargin: 24
+  verticalMargin: 24
 --- !u!4 &1353553520
 Transform:
   m_ObjectHideFlags: 0

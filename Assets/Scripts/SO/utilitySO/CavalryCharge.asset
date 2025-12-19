@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::data.CavalryChargeUtility
   targetType: 0
   damageMultiplier: 1.5
-  stunDuration: 1000000
+  stunDuration: 1
