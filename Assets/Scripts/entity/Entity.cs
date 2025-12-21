@@ -3,6 +3,7 @@ using combat;
 using data;
 using events;
 using UnityEngine;
+using animation;
 
 namespace entity
 {
@@ -21,6 +22,7 @@ namespace entity
         public bool isAlive = true;
         public bool isPlayable;
         private GameObject entityParentObject;
+        
         [Header("Repositioning")]
         private Vector3 targetPosition;
         private bool isMoving = false;
@@ -29,12 +31,29 @@ namespace entity
         private int stunTurnsRemaining = 0;
         public bool IsStunned => stunTurnsRemaining > 0;
         
-        public void Awake()
+        protected EntityAnimator entityAnimator;
+        
+        protected virtual void Awake()
         {
             InitializeStats();
             targetPosition = transform.position;
-            entityParentObject = transform.parent.gameObject;
+            entityParentObject = transform.parent != null ? transform.parent.gameObject : gameObject;
+    
+            // First try children
+            entityAnimator = GetComponentInChildren<EntityAnimator>();
+    
+            // If not found, try siblings (through parent)
+            if (entityAnimator == null && transform.parent != null)
+            {
+                entityAnimator = transform.parent.GetComponentInChildren<EntityAnimator>();
+            }
+    
+            if (entityAnimator != null)
+                Debug.Log($"{entityName}: Found EntityAnimator on {entityAnimator.gameObject.name}");
+            else
+                Debug.LogWarning($"{entityName}: EntityAnimator not found!");
         }
+        
         private void Update()
         {
             if (isMoving)
@@ -52,21 +71,25 @@ namespace entity
                 }
             }
         }
+        
         private void InitializeStats()
         {
             currentHealth = entityData.maxHealth;
         }
 
-        public virtual void TakeDamage(int  damage)
+        public virtual void TakeDamage(int damage)
         {
             if (!isAlive) return;
+            
             currentHealth -= damage;
             CombatEvents.RaiseDamageTaken(this, damage);
+            
             if (currentHealth <= 0)
             {
                 Die();
             }
         }
+        
         public virtual void StartTurn()
         {
             if (CombatManager.Instance.getCurrentActor() != this)
@@ -85,6 +108,7 @@ namespace entity
 
         public virtual void Attack(Entity target)
         {
+            Debug.Log("Attacking the target " + target);
             target.TakeDamage(BaseDamage);
         }
 
@@ -92,16 +116,27 @@ namespace entity
         {
             Debug.Log($"EndTurn by {entityName}");
         }
+        
         public virtual void Die()
         {
             if (!isAlive) return;
+            
             isAlive = false;
             CombatEvents.RaiseEntityDied(this);
+            
+            // Play death animation
+            if (entityAnimator != null)
+            {
+                entityAnimator.PlayDeathAnimation();
+            }
+            
             CombatEvents.RaiseEntityDeathAnimation(entityParentObject);
         }
+        
         public void SetTargetPosition(Vector3 newPosition)
         {
             if (!isAlive || !gameObject.activeInHierarchy) return;
+            
             Debug.Log($"Setting target position to {newPosition}");
             targetPosition = newPosition;
             isMoving = true;
@@ -112,7 +147,5 @@ namespace entity
             stunTurnsRemaining = Mathf.Max(stunTurnsRemaining, duration);
             Debug.Log($"{entityName} stunned for {duration} turns!");
         }
-        
-        
     }
 }
