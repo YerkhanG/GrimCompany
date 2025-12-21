@@ -11,9 +11,9 @@ namespace data
         public TargetType targetType;
         
         [Header("Animation")]
-        public bool shouldLunge = false; // NEW
+        public bool shouldLunge = false;
         [Range(1f, 3f)]
-        public float lungeDistance = 1.5f; // NEW
+        public float lungeDistance = 1.5f; 
         
         public abstract void Execute(Entity caster, Entity target = null);
     }

@@ -14,14 +14,14 @@ namespace animation
         private Entity target;
         private GameObject hitVFXPrefab;
         private bool hasHit = false;
-        private Action onHitCallback; // NEW
+        private Action onHitCallback;
         
         public void Initialize(Entity caster, Entity target, GameObject hitVFX, Action onHit = null)
         {
             this.caster = caster;
             this.target = target;
             this.hitVFXPrefab = hitVFX;
-            this.onHitCallback = onHit; // NEW
+            this.onHitCallback = onHit; 
             
             Destroy(gameObject, lifetime);
         }

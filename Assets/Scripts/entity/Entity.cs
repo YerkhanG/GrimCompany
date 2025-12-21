@@ -129,7 +129,6 @@ namespace entity
             isAlive = false;
             CombatEvents.RaiseEntityDied(this);
             
-            // Play death animation
             if (entityAnimator != null)
             {
                 entityAnimator.PlayDeathAnimation();

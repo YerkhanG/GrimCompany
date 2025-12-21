@@ -50,8 +50,8 @@ namespace animation
         private Vector3 originalPosition;
         private bool isLunging = false;
         
-        private UtilityData currentUtility; // NEW
-        private Entity utilityCaster; // NEW
+        private UtilityData currentUtility; 
+        private Entity utilityCaster;
 
         private void Awake()
         {
@@ -157,7 +157,6 @@ namespace animation
             }
         }
 
-        // NEW - Utility version of lunge
         private IEnumerator PlayUtilityLungeSequence()
         {
             if (currentTarget == null)
@@ -353,7 +352,7 @@ namespace animation
                         entity, 
                         currentTarget, 
                         hitVFXPrefab,
-                        OnProjectileHit // NEW CALLBACK
+                        OnProjectileHit 
                     );
                 }
             }
