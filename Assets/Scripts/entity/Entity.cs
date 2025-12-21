@@ -71,6 +71,11 @@ namespace entity
                 }
             }
         }
+
+        public EntityAnimator GetAnimator()
+        {
+            return entityAnimator;
+        }
         
         private void InitializeStats()
         {

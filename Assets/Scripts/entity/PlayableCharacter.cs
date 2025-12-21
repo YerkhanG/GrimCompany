@@ -58,15 +58,13 @@ namespace entity
         {
             if (CombatManager.Instance.getCurrentActor() != this)
                 return;
-            
-            // Play utility animation, execute effect, then end turn
+    
             if (entityAnimator != null)
             {
                 AnimationController.Instance.PlayAnimation(
                     () => {
-                        entityAnimator.PlayUtilityAnimation(target, null);
-                        // Execute utility effect at animation event frame
-                        utilityData.Execute(this, target);
+                        // DON'T execute here - pass the utility to the animator
+                        entityAnimator.PlayUtilityAnimation(target, null, utilityData, this);
                     },
                     () => {
                         CombatEvents.RaisePlayerTurnEnded();

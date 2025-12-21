@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using combat;
+using data;
 using entity;
 using UnityEngine;
 
@@ -48,6 +49,9 @@ namespace animation
         private Entity currentTarget;
         private Vector3 originalPosition;
         private bool isLunging = false;
+        
+        private UtilityData currentUtility; // NEW
+        private Entity utilityCaster; // NEW
 
         private void Awake()
         {
@@ -132,15 +136,77 @@ namespace animation
             }
         }
         
-        public void PlayUtilityAnimation(Entity target, Action onComplete)
+        public void PlayUtilityAnimation(Entity target, Action onComplete, UtilityData utility = null, Entity caster = null)
         {
             currentTarget = target;
             currentAnimationCallback = onComplete;
+            currentUtility = utility;
+            utilityCaster = caster;
             
+            // Check if this utility should lunge
+            if (utility != null && utility.shouldLunge && currentTarget != null)
+            {
+                StartCoroutine(PlayUtilityLungeSequence());
+            }
+            else
+            {
+                if (animator != null)
+                    animator.SetTrigger(UtilityTrigger);
+                else
+                    OnUtilityAnimationComplete();
+            }
+        }
+
+        // NEW - Utility version of lunge
+        private IEnumerator PlayUtilityLungeSequence()
+        {
+            if (currentTarget == null)
+            {
+                Debug.LogWarning($"{entity.entityName} has no target for utility lunge");
+                OnUtilityAnimationComplete();
+                yield break;
+            }
+            
+            // Store original position
+            originalPosition = transform.position;
+            Vector3 targetPosition = currentTarget.transform.position;
+            float lungeDistance = currentUtility.lungeDistance;
+            Vector3 lungePosition = Vector3.MoveTowards(originalPosition, targetPosition, lungeDistance);
+            
+            // Start utility animation
             if (animator != null)
                 animator.SetTrigger(UtilityTrigger);
-            else
-                OnUtilityAnimationComplete(); // Fallback
+            
+            // Lunge forward
+            isLunging = true;
+            float elapsed = 0f;
+            while (elapsed < lungeDuration)
+            {
+                elapsed += Time.deltaTime;
+                float t = elapsed / lungeDuration;
+                transform.position = Vector3.Lerp(originalPosition, lungePosition, t);
+                yield return null;
+            }
+            
+            // Wait a bit at extended position
+            yield return new WaitForSeconds(0.1f);
+            
+            // Return to original position
+            elapsed = 0f;
+            while (elapsed < lungeDuration)
+            {
+                elapsed += Time.deltaTime;
+                float t = elapsed / lungeDuration;
+                transform.position = Vector3.Lerp(lungePosition, originalPosition, t);
+                yield return null;
+            }
+            
+            transform.position = originalPosition;
+            isLunging = false;
+            
+            // Animation completion handled by animation event
+            if (animator == null)
+                OnUtilityAnimationComplete();
         }
         
         public void PlayHitAnimation()
@@ -221,16 +287,16 @@ namespace animation
             if (currentTarget != null && currentTarget.isAlive)
             {
                 entity.Attack(currentTarget);
-                
+        
                 // Spawn hit VFX on target
                 if (hitVFXPrefab != null)
                     VFXSpawner.Instance?.SpawnVFX(hitVFXPrefab, currentTarget.transform.position);
-                
-                // Play hit animation on target
-                EntityAnimator targetAnimator = currentTarget.GetComponent<EntityAnimator>();
+        
+                // Play hit animation on target - search in children!
+                EntityAnimator targetAnimator = currentTarget.GetAnimator();
                 targetAnimator?.PlayHitAnimation();
             }
-            
+    
             // Spawn attack VFX at attacker
             if (attackVFXPrefab != null)
                 VFXSpawner.Instance?.SpawnVFX(attackVFXPrefab, transform.position);
@@ -298,8 +364,13 @@ namespace animation
         /// </summary>
         public void OnUtilityEffectFrame()
         {
-            // The actual utility effect is handled by UtilityData.Execute()
-            // This is just for visual feedback
+            // Execute the actual utility effect at this frame
+            if (currentUtility != null && utilityCaster != null)
+            {
+                currentUtility.Execute(utilityCaster, currentTarget);
+            }
+    
+            // Spawn VFX
             if (utilityVFXPrefab != null)
             {
                 if (currentTarget != null)
@@ -319,6 +390,8 @@ namespace animation
             currentAnimationCallback?.Invoke();
             currentAnimationCallback = null;
             currentTarget = null;
+            currentUtility = null; // Clear
+            utilityCaster = null; // Clear
         }
         
         /// <summary>

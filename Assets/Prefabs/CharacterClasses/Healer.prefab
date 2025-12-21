@@ -61,6 +61,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4657200159095112249}
   - component: {fileID: 3884028954429660712}
+  - component: {fileID: 3245098093385447250}
+  - component: {fileID: 4590034220243538477}
   m_Layer: 0
   m_Name: HealerVisuals
   m_TagString: Untagged
@@ -141,6 +143,50 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &3245098093385447250
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6663207697364825787}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 3938abd9ae45ce14ea4cbcfbeeabc0e7, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &4590034220243538477
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6663207697364825787}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9a5db2305943c14e8a54cc35af1e2d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::animation.EntityAnimator
+  animator: {fileID: 3245098093385447250}
+  isMeleeCharacter: 1
+  lungeDistance: 2
+  lungeDuration: 0.3
+  isRangedCharacter: 0
+  projectilePrefab: {fileID: 0}
+  projectileSpawnPoint: {fileID: 0}
+  attackVFXPrefab: {fileID: 0}
+  utilityVFXPrefab: {fileID: 4784078654803584430, guid: 4435908b78c2a85418765f4befaf3a4c, type: 3}
+  hitVFXPrefab: {fileID: 0}
 --- !u!1 &7251639663174749581
 GameObject:
   m_ObjectHideFlags: 0
