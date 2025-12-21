@@ -9,11 +9,18 @@ namespace data
     {
         [Header("Targeting")]
         public TargetType targetType;
+        
+        [Header("Animation")]
+        public bool shouldLunge = false; // NEW
+        [Range(1f, 3f)]
+        public float lungeDistance = 1.5f; // NEW
+        
         public abstract void Execute(Entity caster, Entity target = null);
     }
+    
     public enum TargetType
     {
-        AllEnemies,     // Targets all enemies
-        AllAllies       // Targets all allies
+        AllEnemies,
+        AllAllies
     }
 }

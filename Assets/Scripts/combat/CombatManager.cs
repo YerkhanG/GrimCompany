@@ -6,24 +6,28 @@ using combat;
 using events;
 using UnityEditor;
 using UnityEngine;
+using animation;
 
 namespace combat
 {
     public class CombatManager : MonoBehaviour
     {
         public static CombatManager Instance;
-        [Header("Teams reference")] public List<Entity> playerList = new List<Entity>();
+        [Header("Teams reference")] 
+        public List<Entity> playerList = new List<Entity>();
         public List<Entity> enemyList = new List<Entity>();
         public List<Entity> allCombatants = new List<Entity>();
-        [Header("State")] public CombatState combatState;
-        [Header("Managers")] [SerializeField] private PositionManager positionManager;
+        
+        [Header("State")] 
+        public CombatState combatState;
+        
+        [Header("Managers")] 
+        [SerializeField] private PositionManager positionManager;
+        
         private Queue<Entity> turnQueue = new Queue<Entity>();
         private Entity currentActor;
 
-        public Entity getCurrentActor()
-        {
-            return currentActor;
-        }
+        public Entity getCurrentActor() => currentActor;
 
         private void Awake()
         {
@@ -52,6 +56,13 @@ namespace combat
 
         public void EndCurrentTurn()
         {
+            // Don't allow turn to end during animation
+            if (AnimationController.Instance != null && AnimationController.Instance.IsAnimationPlaying())
+            {
+                Debug.LogWarning("Cannot end turn during animation");
+                return;
+            }
+            
             if (currentActor != null)
             {
                 currentActor.EndTurn();
@@ -63,6 +74,7 @@ namespace combat
         private void StartNextTurn()
         {
             Debug.Log($"StartNextTurn called - Frame: {Time.frameCount}");
+            
             if (playerList.All(e => !e.isAlive))
             {
                 LoseGame();
@@ -87,8 +99,11 @@ namespace combat
                 return;
             }
 
-            if (currentActor.isPlayable) combatState = CombatState.PlayerTurn;
-            else combatState = CombatState.EnemyTurn;
+            if (currentActor.isPlayable) 
+                combatState = CombatState.PlayerTurn;
+            else 
+                combatState = CombatState.EnemyTurn;
+            
             currentActor.StartTurn();
             CombatEvents.RaiseCurrentActorPicked(currentActor);
         }
@@ -98,7 +113,6 @@ namespace combat
             Debug.Log($"LoseGame called - Frame: {Time.frameCount}");
             combatState = CombatState.Defeat;
 
-            // Notify the run / map system
             if (RunManager.Instance != null)
             {
                 RunManager.Instance.OnBattleLost();
@@ -110,7 +124,6 @@ namespace combat
             Debug.Log($"WinGame called - Frame: {Time.frameCount}");
             combatState = CombatState.Victory;
 
-            // Notify the run / map system
             if (RunManager.Instance != null)
             {
                 RunManager.Instance.OnBattleWon();
@@ -130,7 +143,6 @@ namespace combat
 
         private void SetupEntityPositions()
         {
-            // Register player positions
             for (int i = 0; i < playerList.Count; i++)
             {
                 positionManager.RegisterEntityPosition(playerList[i], i);
@@ -140,7 +152,6 @@ namespace combat
                 }
             }
 
-            // Register enemy positions
             for (int i = 0; i < enemyList.Count; i++)
             {
                 positionManager.RegisterEntityPosition(enemyList[i], i);

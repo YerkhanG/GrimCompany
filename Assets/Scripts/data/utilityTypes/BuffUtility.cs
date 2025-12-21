@@ -14,9 +14,16 @@ namespace data.utilityTypes
         
         public override void Execute(Entity caster, Entity target = null)
         {
+            Debug.Log($"[BuffUtility] Execute called - Caster: {caster?.entityName}, Target: {target?.entityName}");
+    
             if (target is PlayableCharacter playable)
             {
+                Debug.Log($"[BuffUtility] Applying buff to {playable.entityName}");
                 playable.ApplyBuff(damageBoost, defenseBoost, duration);
+            }
+            else
+            {
+                Debug.Log($"[BuffUtility] Target is not PlayableCharacter! Type: {target?.GetType().Name}");
             }
         }
     }

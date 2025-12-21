@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using combat;
 using UnityEngine;
+using animation;
 
 namespace entity
 {
@@ -25,9 +26,25 @@ namespace entity
             Entity target = FindRandomTarget();
             if (target != null)
             {
-                Attack(target);
+                // Play attack animation, then end turn when complete
+                if (entityAnimator != null)
+                {
+                    AnimationController.Instance.PlayAnimation(
+                        () => entityAnimator.PlayAttackAnimation(target, null),
+                        () => CombatManager.Instance.EndCurrentTurn()
+                    );
+                }
+                else
+                {
+                    // Fallback without animation
+                    Attack(target);
+                    CombatManager.Instance.EndCurrentTurn();
+                }
             }
-            CombatManager.Instance.EndCurrentTurn();
+            else
+            {
+                CombatManager.Instance.EndCurrentTurn();
+            }
         }
 
         private Entity FindRandomTarget()
