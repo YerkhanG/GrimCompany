@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RecruitableMercenary
   displayName: Cavalry
   portrait: {fileID: 3465079563596065642, guid: 7eab70437f9986e4a83908f1ba20240e, type: 3}
-  maxHealth: 200
-  attackDamage: 20
-  speed: 20
+  maxHealth: 100
+  attackDamage: 30
+  speed: 10
   cost: 50
   prefabName: Cavalry

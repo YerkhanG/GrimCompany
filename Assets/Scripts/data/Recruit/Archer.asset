@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RecruitableMercenary
   displayName: Archer
   portrait: {fileID: 1175301634001196307, guid: 0343a4dd7eeb7664daba73958b82371d, type: 3}
-  maxHealth: 200
-  attackDamage: 20
-  speed: 20
-  cost: 50
+  maxHealth: 80
+  attackDamage: 25
+  speed: 15
+  cost: 40
   prefabName: Archer
