@@ -6,12 +6,14 @@ using data;
 using entity;
 using events;
 using JetBrains.Annotations;
+using UnityEditor;
 using UnityEngine;
 
 namespace combat
 {
     public class PositionManager : MonoBehaviour
     {
+        public static PositionManager Instance;
         [Header("Positions")]
         public List<Transform> playableCharPositions = new List<Transform>(4);
         public List<Transform> enemyPositions = new List<Transform>(4);
@@ -21,6 +23,13 @@ namespace combat
         [SerializeField] private float repositionDelay = 0.3f;
         
         private Dictionary<Entity, int> entityPositions = new Dictionary<Entity, int>();
+        private void Awake()
+        {
+            if (Instance == null)
+                Instance = this;
+            else
+                Destroy(gameObject);
+        }
         void OnEnable()
         {
             CombatEvents.OnAttackButtonClicked += HandleAttackRequest;
