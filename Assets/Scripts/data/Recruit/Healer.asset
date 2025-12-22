@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RecruitableMercenary
   displayName: Healer
   portrait: {fileID: 938037435119971776, guid: dd4846d10473c6341bbcc1b218e12b01, type: 3}
-  maxHealth: 200
-  attackDamage: 20
-  speed: 20
+  maxHealth: 50
+  attackDamage: 10
+  speed: 15
   cost: 50
   prefabName: Healer
