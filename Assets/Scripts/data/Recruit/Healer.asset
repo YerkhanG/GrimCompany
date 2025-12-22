@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 12af07eaa8cbb95418958a8fe9960dc8, type: 3}
-  m_Name: Archer
+  m_Name: Healer
   m_EditorClassIdentifier: Assembly-CSharp::RecruitableMercenary
-  displayName: Archer
-  portrait: {fileID: 1175301634001196307, guid: 0343a4dd7eeb7664daba73958b82371d, type: 3}
+  displayName: Healer
+  portrait: {fileID: 938037435119971776, guid: dd4846d10473c6341bbcc1b218e12b01, type: 3}
   maxHealth: 200
   attackDamage: 20
   speed: 20
   cost: 50
-  prefabName: Archer
+  prefabName: Healer
