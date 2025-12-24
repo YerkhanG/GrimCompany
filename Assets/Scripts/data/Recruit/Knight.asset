@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 12af07eaa8cbb95418958a8fe9960dc8, type: 3}
-  m_Name: Mercenary_Knight
+  m_Name: Knight
   m_EditorClassIdentifier: Assembly-CSharp::RecruitableMercenary
-  displayName: Knight
+  displayName: Hero
   portrait: {fileID: -3868812660829053132, guid: 948573b4226d8b74ebdaeaefd7435922, type: 3}
   maxHealth: 200
   attackDamage: 20
   speed: 20
   cost: 50
-  prefabName: Knight
+  prefabName: Hero
