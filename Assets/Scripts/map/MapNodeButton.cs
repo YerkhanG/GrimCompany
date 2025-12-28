@@ -14,9 +14,9 @@ public class MapNodeButton : MonoBehaviour
     {
         _nodeIndex = nodeIndex;
         _data = data;
-
-        if (label != null)
-            label.text = data.id;
+        
+        // if (label != null)
+        //     label.text = data.id;
 
         button.onClick.RemoveAllListeners();
         button.onClick.AddListener(OnClicked);

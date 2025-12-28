@@ -31,7 +31,12 @@ public class MapGenerator : MonoBehaviour
     private void ClearChildren(Transform root)
     {
         for (int i = root.childCount - 1; i >= 0; i--)
-            DestroyImmediate(root.GetChild(i).gameObject);
+        {
+            if (Application.isPlaying)
+                Destroy(root.GetChild(i).gameObject);
+            else
+                DestroyImmediate(root.GetChild(i).gameObject);
+        }
     }
 
     public void GenerateAndBuild()
@@ -41,8 +46,16 @@ public class MapGenerator : MonoBehaviour
 
         rtByIndex.Clear();
         graph = GenerateGraph();
-        InstantiateGraphUI();
         PushToRunManager(graph);
+        InstantiateGraphUI();
+        RefreshNodeInteractables();
+    }
+
+    private void RefreshNodeInteractables()
+    {
+        if (nodeRoot == null) return;
+        var buttons = nodeRoot.GetComponentsInChildren<MapNodeButton>(true);
+        foreach (var b in buttons) b.UpdateInteractable();
     }
 
     private List<GeneratedNode> GenerateGraph()
@@ -135,9 +148,10 @@ public class MapGenerator : MonoBehaviour
         {
             var cur = rows[r];
             var nxt = rows[r + 1];
+
+            // 1) First pass: each node in cur gets 1–2 children
             foreach (var n in cur)
             {
-                // choose 1–2 children in next row within +/- maxParentsWindow in column
                 var candidates = new List<GeneratedNode>();
                 foreach (var m in nxt)
                     if (Mathf.Abs(m.col - n.col) <= maxParentsWindow)
@@ -145,41 +159,75 @@ public class MapGenerator : MonoBehaviour
 
                 if (candidates.Count == 0)
                 {
-                    // fallback: connect to nearest
-                    GeneratedNode nearest = null;
-                    int best = 999;
-                    foreach (var m in nxt)
-                    {
-                        int d = Mathf.Abs(m.col - n.col);
-                        if (d < best)
-                        {
-                            best = d;
-                            nearest = m;
-                        }
-                    }
-
-                    if (nearest != null) n.next.Add(nearest.index);
+                    var nearest = NearestByCol(nxt, n.col);
+                    if (nearest != null) AddUnique(n.next, nearest.index);
+                    continue;
                 }
-                else
+
+                var first = candidates[Random.Range(0, candidates.Count)];
+                AddUnique(n.next, first.index);
+
+                if (candidates.Count > 1 && Random.value < 0.5f)
                 {
-                    // Ensure at least one
-                    var first = candidates[Random.Range(0, candidates.Count)];
-                    n.next.Add(first.index);
+                    var second = first;
+                    int guard = 0;
+                    while (second.index == first.index && guard++ < 10)
+                        second = candidates[Random.Range(0, candidates.Count)];
 
-                    // 50% chance add second distinct
-                    if (candidates.Count > 1 && Random.value < 0.5f)
-                    {
-                        GeneratedNode second;
-                        do
-                        {
-                            second = candidates[Random.Range(0, candidates.Count)];
-                        } while (second.index == first.index && candidates.Count > 1);
+                    AddUnique(n.next, second.index);
+                }
+            }
 
-                        if (second.index != first.index) n.next.Add(second.index);
-                    }
+            // 2) Second pass: ensure every node in nxt has at least one parent
+            var hasParent = new HashSet<int>();
+            foreach (var p in cur)
+            foreach (var child in p.next)
+                hasParent.Add(child);
+
+            foreach (var child in nxt)
+            {
+                if (hasParent.Contains(child.index)) continue;
+
+                // Prefer parents within window, otherwise nearest overall
+                var parentCandidates = new List<GeneratedNode>();
+                foreach (var p in cur)
+                    if (Mathf.Abs(p.col - child.col) <= maxParentsWindow)
+                        parentCandidates.Add(p);
+
+                var parent = parentCandidates.Count > 0
+                    ? parentCandidates[Random.Range(0, parentCandidates.Count)]
+                    : NearestByCol(cur, child.col);
+
+                if (parent != null)
+                {
+                    AddUnique(parent.next, child.index);
+                    hasParent.Add(child.index);
                 }
             }
         }
+    }
+
+    private static void AddUnique(List<int> list, int value)
+    {
+        if (!list.Contains(value)) list.Add(value);
+    }
+
+    private static GeneratedNode NearestByCol(List<GeneratedNode> list, int col)
+    {
+        GeneratedNode best = null;
+        int bestD = int.MaxValue;
+
+        foreach (var n in list)
+        {
+            int d = Mathf.Abs(n.col - col);
+            if (d < bestD)
+            {
+                bestD = d;
+                best = n;
+            }
+        }
+
+        return best;
     }
 
     private void EnsureSnake(List<List<GeneratedNode>> rows)
@@ -307,10 +355,9 @@ public class MapGenerator : MonoBehaviour
         if (rm == null) return;
 
         var map = new MapNode[data.Count];
-        for (int i = 0; i < data.Count; i++)
+        foreach (var g in data)
         {
-            var g = data[i];
-            map[i] = new MapNode
+            map[g.index] = new MapNode
             {
                 id = g.typeDef != null ? g.typeDef.id : "Enemy",
                 type = g.typeDef != null ? g.typeDef.logicalType : MapNodeType.Combat,
@@ -321,7 +368,7 @@ public class MapGenerator : MonoBehaviour
         }
 
         rm.currentMapPath = map;
-        rm.currentNodeIndex = -1; // start before first node
+        rm.currentNodeIndex = -1;
     }
 
     public void BuildFromExisting(MapNode[] map)
