@@ -16,4 +16,4 @@ MonoBehaviour:
   shouldLunge: 1
   lungeDistance: 1.5
   damageMultiplier: 3.5
-  stunDuration: 1000000
+  stunDuration: 1
