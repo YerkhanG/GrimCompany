@@ -99,10 +99,7 @@ public class RunManager : MonoBehaviour
 
         if (node.type == MapNodeType.Boss)
         {
-            // End of run -> next time Map Scene opens, generate a fresh map
-            currentMapPath = null;
-            currentNodeIndex = -1;
-            
+            ResetRun();
             SceneManager.LoadScene("Lobby");
             return;
         }
@@ -112,6 +109,13 @@ public class RunManager : MonoBehaviour
 
     public void OnBattleLost()
     {
+        ResetRun();
         SceneManager.LoadScene("Lobby");
+    }
+    
+    public void ResetRun()
+    {
+        currentMapPath = null;
+        currentNodeIndex = -1;
     }
 }

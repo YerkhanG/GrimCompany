@@ -13,14 +13,16 @@ public class MapUIController : MonoBehaviour
         if (generator == null) return;
 
         var run = RunManager.Instance;
-        if (run != null && run.currentMapPath != null && run.currentMapPath.Length > 0)
+
+        if (run != null &&
+            run.currentMapPath != null &&
+            run.currentMapPath.Length > 0 &&
+            run.currentNodeIndex >= 0)
         {
-            // Map already exists (coming back from combat) -> just rebuild UI
             generator.BuildFromExisting(run.currentMapPath);
         }
         else
         {
-            // New run -> generate and push to RunManager
             generator.GenerateAndBuild();
         }
     }
