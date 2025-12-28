@@ -75,7 +75,6 @@ public class RunManager : MonoBehaviour
 
         switch (node.type)
         {
-            // here
             case MapNodeType.Boss:
                 SceneManager.LoadScene("Boss Combat");
                 break;

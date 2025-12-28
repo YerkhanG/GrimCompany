@@ -1,6 +1,6 @@
 using System;
 using System.Collections;
-using combat;
+using audio;
 using data;
 using entity;
 using UnityEngine;
@@ -286,17 +286,17 @@ namespace animation
             if (currentTarget != null && currentTarget.isAlive)
             {
                 entity.Attack(currentTarget);
-        
-                // Spawn hit VFX on target
+                
                 if (hitVFXPrefab != null)
                     VFXSpawner.Instance?.SpawnVFX(hitVFXPrefab, currentTarget.transform.position);
-        
-                // Play hit animation on target - search in children!
+
                 EntityAnimator targetAnimator = currentTarget.GetAnimator();
                 targetAnimator?.PlayHitAnimation();
+                
+                AudioManager.PlaySound(SoundType.SWORD);
+                AudioManager.PlaySound(SoundType.HURT, 0.5f);
             }
-    
-            // Spawn attack VFX at attacker
+
             if (attackVFXPrefab != null)
                 VFXSpawner.Instance?.SpawnVFX(attackVFXPrefab, transform.position);
         }
@@ -329,6 +329,9 @@ namespace animation
             currentAnimationCallback?.Invoke();
             currentAnimationCallback = null;
             currentTarget = null;
+            
+            AudioManager.PlaySound(SoundType.BOW_HIT);
+            AudioManager.PlaySound(SoundType.HURT, 0.5f);
         }
         
         /// <summary>
@@ -344,9 +347,10 @@ namespace animation
         
                 GameObject projectile = Instantiate(projectilePrefab, spawnPos, Quaternion.identity);
                 ProjectileController controller = projectile.GetComponent<ProjectileController>();
-        
+                
                 if (controller != null)
                 {
+                    AudioManager.PlaySound(SoundType.BOW);
                     // Pass a callback to complete animation when projectile hits
                     controller.Initialize(
                         entity, 
@@ -367,6 +371,19 @@ namespace animation
             if (currentUtility != null && utilityCaster != null)
             {
                 currentUtility.Execute(utilityCaster, currentTarget);
+                
+                switch (currentUtility.utilityType)
+                {
+                    case UtilityType.Damage:
+                        AudioManager.PlaySound(SoundType.HURT);
+                        break;
+                    case UtilityType.Heal:
+                         AudioManager.PlaySound(SoundType.HEAL);
+                         break;
+                     case UtilityType.Buff:
+                         AudioManager.PlaySound(SoundType.BUFF);
+                         break;
+                }
             }
     
             // Spawn VFX
@@ -406,7 +423,7 @@ namespace animation
         /// </summary>
         public void OnDeathAnimationComplete()
         {
-            // Handled by EntityAnimationManager fade
+            AudioManager.PlaySound(SoundType.DEATH);
         }
         
         #endregion

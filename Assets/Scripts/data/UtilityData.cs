@@ -2,11 +2,22 @@ using System.Collections.Generic;
 using entity;
 using UnityEngine;
 
+public enum UtilityType
+{
+    Damage,
+    Heal,
+    Buff,
+    Debuff
+}
+
 namespace data
 {
     [CreateAssetMenu(fileName = "New Utility Data", menuName = "Utility/Utility Data")]
     public abstract class UtilityData : ScriptableObject
     {
+        [Header("Type")]
+        public UtilityType utilityType;
+        
         [Header("Targeting")]
         public TargetType targetType;
         

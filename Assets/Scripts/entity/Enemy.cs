@@ -26,7 +26,6 @@ namespace entity
             Entity target = FindRandomTarget();
             if (target != null)
             {
-                // Play attack animation, then end turn when complete
                 if (entityAnimator != null)
                 {
                     AnimationController.Instance.PlayAnimation(
@@ -36,7 +35,7 @@ namespace entity
                 }
                 else
                 {
-                    // Fallback without animation
+                    // No animation
                     Attack(target);
                     CombatManager.Instance.EndCurrentTurn();
                 }
