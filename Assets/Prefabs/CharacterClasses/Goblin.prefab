@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6995706138975658599}
   - component: {fileID: 4839579807729805803}
+  - component: {fileID: 6388509301572545456}
   m_Layer: 0
   m_Name: GoblinLogic
   m_TagString: Untagged
@@ -50,6 +51,19 @@ MonoBehaviour:
   currentPosition: 0
   isAlive: 1
   isPlayable: 0
+--- !u!114 &6388509301572545456
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 134130681174710614}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b1382e4913b4e48b798b6429c7c4ca6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyProgressionApplier
+  settings: {fileID: 11400000, guid: a476cac8d5902e244a9360790ab8fac4, type: 2}
 --- !u!1 &927954709617107432
 GameObject:
   m_ObjectHideFlags: 0

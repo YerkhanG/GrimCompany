@@ -345,7 +345,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d7e2d2d0010f754d977cb2834b3a446, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MapGenerator
-  height: 3
+  height: 4
   width: 4
   rowNodeDensity: 0.7
   enemyType: {fileID: 11400000, guid: 252005e63e7d7a241a64945a9a72a059, type: 2}
