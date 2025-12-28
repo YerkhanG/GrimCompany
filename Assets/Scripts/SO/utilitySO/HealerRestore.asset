@@ -12,6 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2116a41f4b3f43be8cc6c2f6409fe14a, type: 3}
   m_Name: HealerRestore
   m_EditorClassIdentifier: Assembly-CSharp::data.HealerRestoreUtility
+  utilityType: 1
   targetType: 1
+  shouldLunge: 0
+  lungeDistance: 1.5
   healAmount: 30
   healSelf: 1
