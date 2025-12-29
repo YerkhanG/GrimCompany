@@ -14,7 +14,7 @@ public class RunManager : MonoBehaviour
     public int currentNodeIndex = -1;
 
     public List<HeroData> party = new List<HeroData>();
-
+    public event Action OnPartyChanged;
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -35,6 +35,17 @@ public class RunManager : MonoBehaviour
         {
             currentNodeIndex = -1;
         }
+    }
+    public void AddHero(HeroData hero)
+    {
+        party.Add(hero);
+        Debug.Log("Bought a hero and adding to party , should invoke an event");
+        OnPartyChanged?.Invoke(); 
+    }
+    public void UpdatePartyList(List<HeroData> newParty)
+    {
+        party = newParty;
+        OnPartyChanged?.Invoke();
     }
 
     public MapNode CurrentNode =>
