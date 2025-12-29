@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using persistence;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -110,9 +111,8 @@ public class RecruitPanelUI : MonoBehaviour
 
         if (_purchaser.SpendFunds(_selected.cost))
         {
-            // Add the recruited hero to the run manager's party
-            var heroData = new HeroData(_selected.prefabName);
-            RunManager.Instance.party.Add(heroData);
+            var heroData = new HeroData(_selected.prefabName, _selected.portrait);
+            RunManager.Instance.AddHero(heroData);
         
             Debug.Log($"Recruited {_selected.displayName} - Added to party");
 
