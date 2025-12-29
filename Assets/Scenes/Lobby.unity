@@ -4569,6 +4569,13 @@ MonoBehaviour:
     - {fileID: 8300000, guid: de5f8faae8f7d7a4fac2d299c53ed196, type: 3}
     - {fileID: 8300000, guid: 3fbec5a8ff835b34098436a9a752f675, type: 3}
     - {fileID: 8300000, guid: 087224dd7ec352f42a3b950a07009a88, type: 3}
+  - name: BOW_HIT
+    sounds: []
+  - name: BUFF
+    sounds: []
+  - name: HEAL
+    sounds: []
+  sfxVolume: 1
   bgmClip: {fileID: 8300000, guid: 41bad504417a5364a8ccbfd50be1fe4f, type: 3}
   bgmVolume: 0.5
   playBGMOnStart: 1
@@ -4965,7 +4972,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::lobby.recruit.RecruitPartyUI
   listRoot: {fileID: 170838800}
-  partyMemberPrefab: {fileID: 5280443012189316942, guid: e7deeb1431350f44dbb2cc22dfee7074, type: 3}
+  partyMemberPrefab: {fileID: 3914543237356051148, guid: cdd2f38293f056747bc140b419f4eb92, type: 3}
 --- !u!114 &1079661382
 MonoBehaviour:
   m_ObjectHideFlags: 0
