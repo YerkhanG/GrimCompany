@@ -80,7 +80,6 @@ public class TavernUI : MonoBehaviour
 
     private void RefreshShopUI_Categories()
     {
-        // Clear the current categories
         for (int childIndex = categoryUIRoot.childCount - 1; childIndex >= 0; childIndex--)
         {
             var childGO = categoryUIRoot.GetChild(childIndex).gameObject;
@@ -90,7 +89,6 @@ public class TavernUI : MonoBehaviour
         shopCategories = new List<ShopItemCategory>();
         shopCategoryToUIMap = new Dictionary<ShopItemCategory, ShopUI_Category>();
 
-        // Determine category list
         foreach (var item in availableItems)
         {
             if (!shopCategories.Contains(item.category))
@@ -101,7 +99,6 @@ public class TavernUI : MonoBehaviour
 
         shopCategories.Sort((lhs, rhs) => String.Compare(lhs.categoryName, rhs.categoryName, StringComparison.Ordinal));
 
-        // Instantiate the categories
         foreach (var category in shopCategories)
         {
             var newCategoryUI = Instantiate(categoryUIPrefab, categoryUIRoot);
@@ -121,13 +118,12 @@ public class TavernUI : MonoBehaviour
 
     private void OnCategorySelected(ShopItemCategory newlySelectedCategory)
     {
-        // clear the selected item when switching categories
+
         if (selectedCategory != null && newlySelectedCategory != null && selectedCategory != newlySelectedCategory)
         {
             selectedItem = null;
         }
 
-        // Update the selection UI
         selectedCategory = newlySelectedCategory;
 
         foreach (var category in shopCategories)
@@ -140,7 +136,6 @@ public class TavernUI : MonoBehaviour
 
     private void RefreshShopUI_Items()
     {
-        // Clear the previous items when switching categories
         for (int childIndex = itemUIRoot.childCount - 1; childIndex >= 0; childIndex--)
         {
             var childGO = itemUIRoot.GetChild(childIndex).gameObject;

@@ -56,7 +56,6 @@ namespace combat
 
         public void EndCurrentTurn()
         {
-            // Don't allow turn to end during animation
             if (AnimationController.Instance != null && AnimationController.Instance.IsAnimationPlaying())
             {
                 Debug.LogWarning("Cannot end turn during animation");

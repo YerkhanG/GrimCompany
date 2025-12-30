@@ -83,7 +83,7 @@ namespace lobby.recruit
 
             var cg = dragVisual.AddComponent<CanvasGroup>();
             cg.alpha = 0.8f;
-            cg.blocksRaycasts = false; // Don't block raycasts
+            cg.blocksRaycasts = false; 
         }
 
         public void OnDrag(PointerEventData eventData)

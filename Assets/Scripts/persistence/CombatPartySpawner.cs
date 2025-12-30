@@ -56,6 +56,7 @@ namespace persistence
             }
             var spawnPoint = PositionManager.Instance.playableCharPositions[i];
             var spawnedHero = Instantiate(prefab,spawnPoint.position, Quaternion.identity);
+            spawnedHero.GetComponentInChildren<PlayableCharacter>().currentHealth = heroData.currentHealth;
             spawnedHero.transform.SetParent(spawnPoint);
             _spawnedHeroes.Add(spawnedHero);
         }
@@ -80,7 +81,8 @@ namespace persistence
         {
             foreach (var hero in _spawnedHeroes)
             {
-                CombatManager.Instance.playerList.Add(hero.GetComponentInChildren<PlayableCharacter>());
+                var spawnedHero = hero.GetComponentInChildren<PlayableCharacter>();
+                CombatManager.Instance.playerList.Add(spawnedHero);
             }
         }
     }

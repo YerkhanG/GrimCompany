@@ -13,9 +13,6 @@ public enum AnimatorParameters
 
 namespace animation
 {
-    /// <summary>
-    /// Handles animations for individual entities
-    /// </summary>
     public class EntityAnimator : MonoBehaviour
     {
         [Header("Components")]
@@ -56,11 +53,9 @@ namespace animation
         private void Awake()
         {
             Debug.Log($"[EntityAnimator] Awake on {gameObject.name}");
-    
-            // First try parent
+            
             entity = GetComponentInParent<Entity>();
-    
-            // If not found in parent, try siblings through parent
+            
             if (entity == null && transform.parent != null)
             {
                 entity = transform.parent.GetComponentInChildren<Entity>();
@@ -87,7 +82,7 @@ namespace animation
         private void Update()
         {
             if (isLunging)
-                return; // Position handled by lunge coroutine
+                return; 
         }
 
         public Animator getAnimator()
@@ -124,11 +119,11 @@ namespace animation
                 if (animator != null)
                     animator.SetTrigger(AttackTrigger);
                 else
-                    OnAttackAnimationComplete(); // Fallback if no animator
+                    OnAttackAnimationComplete(); 
             }
             else
             {
-                // Generic attack
+
                 if (animator != null)
                     animator.SetTrigger(AttackTrigger);
                 else
@@ -142,8 +137,7 @@ namespace animation
             currentAnimationCallback = onComplete;
             currentUtility = utility;
             utilityCaster = caster;
-            
-            // Check if this utility should lunge
+      
             if (utility != null && utility.shouldLunge && currentTarget != null)
             {
                 StartCoroutine(PlayUtilityLungeSequence());
@@ -165,18 +159,15 @@ namespace animation
                 OnUtilityAnimationComplete();
                 yield break;
             }
-            
-            // Store original position
+     
             originalPosition = transform.position;
             Vector3 targetPosition = currentTarget.transform.position;
             float lungeDistance = currentUtility.lungeDistance;
             Vector3 lungePosition = Vector3.MoveTowards(originalPosition, targetPosition, lungeDistance);
-            
-            // Start utility animation
+ 
             if (animator != null)
                 animator.SetTrigger(UtilityTrigger);
-            
-            // Lunge forward
+
             isLunging = true;
             float elapsed = 0f;
             while (elapsed < lungeDuration)
@@ -186,11 +177,9 @@ namespace animation
                 transform.position = Vector3.Lerp(originalPosition, lungePosition, t);
                 yield return null;
             }
-            
-            // Wait a bit at extended position
+
             yield return new WaitForSeconds(0.1f);
-            
-            // Return to original position
+   
             elapsed = 0f;
             while (elapsed < lungeDuration)
             {
@@ -202,8 +191,7 @@ namespace animation
             
             transform.position = originalPosition;
             isLunging = false;
-            
-            // Animation completion handled by animation event
+
             if (animator == null)
                 OnUtilityAnimationComplete();
         }
@@ -232,17 +220,12 @@ namespace animation
                 OnAttackAnimationComplete();
                 yield break;
             }
-            
-            // Store original position
             originalPosition = transform.position;
             Vector3 targetPosition = currentTarget.transform.position;
             Vector3 lungePosition = Vector3.MoveTowards(originalPosition, targetPosition, lungeDistance);
-            
-            // Start attack animation
-            if (animator != null)
+            if (animator)
                 animator.SetTrigger(AttackTrigger);
-            
-            // Lunge forward
+
             isLunging = true;
             float elapsed = 0f;
             while (elapsed < lungeDuration)
@@ -252,11 +235,8 @@ namespace animation
                 transform.position = Vector3.Lerp(originalPosition, lungePosition, t);
                 yield return null;
             }
-            
-            // Wait a bit at extended position
+
             yield return new WaitForSeconds(0.1f);
-            
-            // Return to original position
             elapsed = 0f;
             while (elapsed < lungeDuration)
             {
@@ -269,18 +249,14 @@ namespace animation
             transform.position = originalPosition;
             isLunging = false;
             
-            // Animation completion handled by animation event or fallback timer
-            if (animator == null)
+            if (!animator)
                 OnAttackAnimationComplete();
         }
         
         #endregion
         
         #region Animation Events (called from Animation clips)
-        
-        /// <summary>
-        /// Called at the damage frame of attack animation
-        /// </summary>
+
         public void OnAttackDamageFrame()
         {
             if (currentTarget != null && currentTarget.isAlive)
@@ -301,30 +277,21 @@ namespace animation
                 VFXSpawner.Instance?.SpawnVFX(attackVFXPrefab, transform.position);
         }
         
-        /// <summary>
-        /// Called when attack animation completes
-        /// </summary>
         public void OnAttackAnimationComplete()
         {
-            PlayIdleAnimation(); // Transition back to idle
-    
-            // DON'T signal animation controller here for ranged attacks
-            // The projectile will do it when it hits
+            PlayIdleAnimation(); 
+
             if (!isRangedCharacter)
             {
-                // For melee, complete immediately
                 AnimationController.Instance?.SignalAnimationComplete();
                 currentAnimationCallback?.Invoke();
                 currentAnimationCallback = null;
                 currentTarget = null;
             }
-            // For ranged, projectile callback will handle completion
         }
 
-        // Called when projectile hits target
         private void OnProjectileHit()
         {
-            // NOW signal animation complete
             AnimationController.Instance?.SignalAnimationComplete();
             currentAnimationCallback?.Invoke();
             currentAnimationCallback = null;
@@ -334,9 +301,6 @@ namespace animation
             AudioManager.PlaySound(SoundType.HURT, 0.5f);
         }
         
-        /// <summary>
-        /// Called at projectile spawn frame
-        /// </summary>
         public void OnProjectileSpawnFrame()
         {
             if (currentTarget != null && projectilePrefab != null)
@@ -351,7 +315,6 @@ namespace animation
                 if (controller != null)
                 {
                     AudioManager.PlaySound(SoundType.BOW);
-                    // Pass a callback to complete animation when projectile hits
                     controller.Initialize(
                         entity, 
                         currentTarget, 
@@ -362,12 +325,8 @@ namespace animation
             }
         }
         
-        /// <summary>
-        /// Called at the effect frame of utility animation
-        /// </summary>
         public void OnUtilityEffectFrame()
         {
-            // Execute the actual utility effect at this frame
             if (currentUtility != null && utilityCaster != null)
             {
                 currentUtility.Execute(utilityCaster, currentTarget);
@@ -385,8 +344,7 @@ namespace animation
                          break;
                 }
             }
-    
-            // Spawn VFX
+
             if (utilityVFXPrefab != null)
             {
                 if (currentTarget != null)
@@ -396,9 +354,6 @@ namespace animation
             }
         }
         
-        /// <summary>
-        /// Called when utility animation completes
-        /// </summary>
         public void OnUtilityAnimationComplete()
         {
             PlayIdleAnimation();
@@ -406,21 +361,16 @@ namespace animation
             currentAnimationCallback?.Invoke();
             currentAnimationCallback = null;
             currentTarget = null;
-            currentUtility = null; // Clear
-            utilityCaster = null; // Clear
+            currentUtility = null;
+            utilityCaster = null; 
         }
-        
-        /// <summary>
-        /// Called when hit animation completes
-        /// </summary>
+  
         public void OnHitAnimationComplete()
         {
             PlayIdleAnimation();
         }
         
-        /// <summary>
-        /// Called when death animation completes
-        /// </summary>
+
         public void OnDeathAnimationComplete()
         {
             AudioManager.PlaySound(SoundType.DEATH);

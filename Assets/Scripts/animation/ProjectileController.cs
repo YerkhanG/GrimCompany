@@ -56,18 +56,15 @@ namespace animation
                 caster.Attack(target);
                 
                 Debug.Log("Playing hit animation " + caster + " and " + target);
-                // Play hit animation - search in children!
                 EntityAnimator targetAnimator = target.GetAnimator();
                 
                 Debug.Log("Target animator: " + targetAnimator);
                 targetAnimator?.PlayHitAnimation();
             }
-    
-            // Spawn hit VFX
+            
             if (hitVFXPrefab != null)
                 VFXSpawner.Instance?.SpawnVFX(hitVFXPrefab, transform.position);
-    
-            // Call the callback to signal animation complete
+
             onHitCallback?.Invoke();
     
             Destroy(gameObject);

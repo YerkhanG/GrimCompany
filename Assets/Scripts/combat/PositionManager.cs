@@ -124,7 +124,6 @@ namespace combat
 
         private void ReorganizeTeam(List<Entity> team, List<Transform> positions)
         {
-            //MOVE
             var livingEntities = team
                 .Where(e => e.isAlive && entityPositions.ContainsKey(e))
                 .OrderBy(e => entityPositions[e])
@@ -144,7 +143,6 @@ namespace combat
                     entity.SetTargetPosition(newWorldPosition);
                     Debug.Log($"{entity.entityName} moving: position {oldPosition} → {newPosition}");
                 }
-                //ClEAN
                 var deadEntities = team.Where(e => !e.isAlive).ToList();
                 foreach (var dead in deadEntities)
                 {
@@ -163,10 +161,6 @@ namespace combat
         }
         private int CalculateDistance(int attackerPos, int enemyPos)
         {
-            // Attacker in position 0 (front) to enemy in position 0 (front) = distance 1
-            // Attacker in position 0 to enemy in position 1 = distance 2
-            // Attacker in position 1 to enemy in position 0 = distance 2 (1 back + 1 across)
-        
             return attackerPos + enemyPos + 1;
         }
     }

@@ -51,8 +51,7 @@ public class RecruitRowUI : MonoBehaviour
 
         costLabel.color = canAfford ? Color.white : Color.red;
     }
-
-    // Hook this to the Button.OnClick on the prefab
+    
     public void OnRowClicked()
     {
         _onClicked?.Invoke(_data);

@@ -22,7 +22,7 @@ namespace entity
         {
             if (CombatManager.Instance.getCurrentActor() != this)
                 return;
-        
+    
             Entity target = FindRandomTarget();
             if (target != null)
             {
@@ -35,7 +35,6 @@ namespace entity
                 }
                 else
                 {
-                    // No animation
                     Attack(target);
                     CombatManager.Instance.EndCurrentTurn();
                 }

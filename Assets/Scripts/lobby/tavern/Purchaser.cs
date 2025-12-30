@@ -15,7 +15,6 @@ public class Purchaser : MonoBehaviour, IPurchaser
 
     private void Awake()
     {
-        // Singleton + persist across scenes
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);

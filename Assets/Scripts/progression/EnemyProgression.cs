@@ -14,8 +14,7 @@ public static class EnemyProgression
         if (node == null) return 1f;
 
         int row = node.row;
-
-        // Find max row in the stored map (so we don't depend on generator height)
+        
         int maxRow = 0;
         foreach (var n in run.currentMapPath)
             maxRow = Mathf.Max(maxRow, n.row);

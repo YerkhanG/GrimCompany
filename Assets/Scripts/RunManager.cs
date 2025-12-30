@@ -25,8 +25,7 @@ public class RunManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
-
-        // Ensure we start before any node
+        
         if (currentMapPath == null || currentMapPath.Length == 0)
         {
             currentNodeIndex = -1;
@@ -97,11 +96,11 @@ public class RunManager : MonoBehaviour
 
     public void OnBattleWon()
     {
+        SavePartyHP();
         var node = currentMapPath[currentNodeIndex];
 
         float bounty = 20f;
 
-        // Give bounty to Purchaser
         if (Purchaser.Instance != null)
         {
             Purchaser.Instance.AddFunds(bounty);
@@ -115,6 +114,29 @@ public class RunManager : MonoBehaviour
         }
 
         SceneManager.LoadScene("Map Scene");
+    }
+
+    private void SavePartyHP()
+    {
+        if (!combat.CombatManager.Instance)
+        {
+            Debug.LogWarning("[RunManager] CombatManager not found, cannot save HP");
+            return;
+        }
+
+        var playerList = combat.CombatManager.Instance.playerList;
+        
+        for (int i = 0; i < party.Count && i < playerList.Count; i++)
+        {
+            var heroData = party[i];
+            var entity = playerList[i];
+            
+            if (entity)
+            {
+                heroData.UpdateHP(entity.currentHealth);
+                Debug.Log($"[RunManager] Saved {heroData.prefabName}: {heroData.currentHealth}");
+            }
+        }
     }
 
     public void OnBattleLost()

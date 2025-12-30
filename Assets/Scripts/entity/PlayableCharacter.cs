@@ -32,7 +32,6 @@ namespace entity
                 return;
          
             Debug.Log("Target selected");
-            // Play attack animation, then end turn when complete
             if (entityAnimator != null)
             {
                 Debug.Log("Animating playable character");
@@ -47,7 +46,6 @@ namespace entity
             else
             {
                 Debug.Log("Not animating playable character");
-                // Fallback without animation
                 Attack(target);
                 CombatEvents.RaisePlayerTurnEnded();
                 CombatManager.Instance.EndCurrentTurn();
@@ -63,7 +61,6 @@ namespace entity
             {
                 AnimationController.Instance.PlayAnimation(
                     () => {
-                        // DON'T execute here - pass the utility to the animator
                         entityAnimator.PlayUtilityAnimation(target, null, utilityData, this);
                     },
                     () => {
@@ -74,7 +71,6 @@ namespace entity
             }
             else
             {
-                // Fallback without animation
                 utilityData.Execute(this, target);
                 CombatEvents.RaisePlayerTurnEnded();
                 CombatManager.Instance.EndCurrentTurn();
@@ -86,7 +82,6 @@ namespace entity
             InitSubscriptions();
             base.StartTurn();
             
-            // Play attack ready animation when turn starts
             if (entityAnimator != null)
                 entityAnimator.PlayAttackReadyAnimation();
             
@@ -141,8 +136,7 @@ namespace entity
         public override void EndTurn()
         {
             InitUnsubscriptions();
-            
-            // Return to idle animation
+
             if (entityAnimator != null)
                 entityAnimator.PlayIdleAnimation();
             

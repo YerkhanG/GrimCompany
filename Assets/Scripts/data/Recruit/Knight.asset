@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RecruitableMercenary
   displayName: Hero
   portrait: {fileID: -3868812660829053132, guid: 948573b4226d8b74ebdaeaefd7435922, type: 3}
-  maxHealth: 200
-  attackDamage: 20
+  maxHealth: 250
+  attackDamage: 50
   speed: 20
   cost: 50
   prefabName: Hero

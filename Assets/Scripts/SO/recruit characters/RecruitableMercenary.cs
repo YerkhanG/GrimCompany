@@ -11,7 +11,7 @@ public class RecruitableMercenary : ScriptableObject
 
     [Header("Stats")] public int maxHealth;
     public int attackDamage;
-    public int speed; // or haste
+    public int speed; 
 
     [Header("Recruiting")] public float cost;
     public string prefabName;

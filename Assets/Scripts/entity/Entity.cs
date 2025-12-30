@@ -72,11 +72,9 @@ namespace entity
             
             targetPosition = transform.position;
             entityParentObject = transform.parent != null ? transform.parent.gameObject : gameObject;
-
-            // First try children
+            
             entityAnimator = GetComponentInChildren<EntityAnimator>();
 
-            // If not found, try siblings (through parent)
             if (entityAnimator == null && transform.parent != null)
             {
                 entityAnimator = transform.parent.GetComponentInChildren<EntityAnimator>();

@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class RecruitPanelUI : MonoBehaviour
 {
     [Header("UI")] [SerializeField] private TextMeshProUGUI fundsLabel;
-    [SerializeField] private Transform listRoot; // Content transform
+    [SerializeField] private Transform listRoot; 
     [SerializeField] private Button recruitButton;
 
     [Header("Prefabs")] [SerializeField] private GameObject recruitRowPrefab;
@@ -42,7 +42,6 @@ public class RecruitPanelUI : MonoBehaviour
 
     private void BuildList()
     {
-        // Clear old UI
         for (var i = listRoot.childCount - 1; i >= 0; i--)
         {
             Destroy(listRoot.GetChild(i).gameObject);
@@ -111,7 +110,7 @@ public class RecruitPanelUI : MonoBehaviour
 
         if (_purchaser.SpendFunds(_selected.cost))
         {
-            var heroData = new HeroData(_selected.prefabName, _selected.portrait);
+            var heroData = new HeroData(_selected.prefabName, _selected.portrait, _selected.maxHealth);
             RunManager.Instance.AddHero(heroData);
         
             Debug.Log($"Recruited {_selected.displayName} - Added to party");
